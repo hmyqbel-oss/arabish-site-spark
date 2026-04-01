@@ -3,12 +3,11 @@ import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const serviceLinks = [
+  { label: "التصاميم والمخططات الهندسية", href: "#services" },
+  { label: "الإشراف وإدارة المشاريع", href: "#services" },
   { label: "السلامة الهندسية", href: "#services" },
-  { label: "الإشراف", href: "#services" },
-  { label: "التصميم", href: "#services" },
-  { label: "الخدمات الإستشارية والدعم الفني", href: "#services" },
+  { label: "الدعم الفني والخدمات الاستشارية", href: "#services" },
   { label: "الدراسات المرورية", href: "#services" },
-  { label: "الأعمال المساحية", href: "#services" },
 ];
 
 const navLinks = [

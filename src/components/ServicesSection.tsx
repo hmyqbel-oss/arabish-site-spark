@@ -1,4 +1,4 @@
-import { Ruler, HardHat, ShieldCheck, Wrench, TrafficCone, MapPin } from "lucide-react";
+import { Ruler, HardHat, ShieldCheck, Wrench, TrafficCone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const services = [
@@ -6,31 +6,41 @@ const services = [
     icon: Ruler,
     title: "التصاميم والمخططات الهندسية",
     description: "يتخصص مهندسونا في تقديم خدمات التصميم بكافة مراحله بدءاً من إعداد التصاميم الأولية وانتهاءً بالمخططات التنفيذية.",
+    color: "text-accent",
+    bgColor: "bg-accent/10",
+    delay: 0,
   },
   {
     icon: HardHat,
     title: "الإشراف وإدارة المشاريع",
     description: "نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في الإشراف على تنفيذ المشاريع الهندسية.",
+    color: "text-amber-500",
+    bgColor: "bg-amber-50",
+    delay: 1,
   },
   {
     icon: ShieldCheck,
     title: "السلامة الهندسية",
     description: "أحد أهم أقسام الشركة والذي يقدم حلول سلامة متكاملة تشمل تقييم المخاطر وخطط الطوارئ والتدريب.",
+    color: "text-teal-500",
+    bgColor: "bg-teal-50",
+    delay: 2,
   },
   {
     icon: Wrench,
     title: "الدعم الفني والخدمات الاستشارية",
     description: "نقدم حلولاً تقنية متخصصة وتوجيهات لضمان تنفيذ المشاريع بكفاءة وفق المعايير الهندسية المطلوبة.",
+    color: "text-indigo-500",
+    bgColor: "bg-indigo-50",
+    delay: 3,
   },
   {
     icon: TrafficCone,
-    title: "السلامة المرورية",
+    title: "الدراسات المرورية",
     description: "نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في دراسات وتحليل السلامة المرورية.",
-  },
-  {
-    icon: MapPin,
-    title: "الأعمال المساحية",
-    description: "نقدم خدمات مساحية متكاملة تشمل الرفع المساحي والمعماري وتحديث الصكوك ونقل الملكية والتجزئة والفرز.",
+    color: "text-orange-500",
+    bgColor: "bg-orange-50",
+    delay: 4,
   },
 ];
 
@@ -56,21 +66,42 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
     <div
       ref={ref}
       style={{ transitionDelay: `${index * 150}ms` }}
-      className={`bg-card rounded-lg p-6 md:p-8 border border-border cursor-pointer
-        transition-all duration-700 ease-out
-        hover:shadow-xl hover:-translate-y-2 hover:border-accent/30
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      className={`bg-card rounded-2xl p-6 md:p-8 border border-border group cursor-pointer
+        transition-all duration-700 ease-out text-center
+        hover:shadow-2xl hover:-translate-y-3 hover:border-accent/20
+        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
     >
-      <div className="w-16 h-16 rounded-xl bg-accent/10 flex items-center justify-center mb-6
-        transition-all duration-300 hover:bg-accent hover:scale-110">
-        <service.icon className="w-8 h-8 text-accent transition-colors duration-300" />
+      {/* Animated Icon Container */}
+      <div className="flex justify-center mb-6">
+        <div className={`relative w-28 h-28 md:w-36 md:h-36 ${service.bgColor} rounded-2xl flex items-center justify-center
+          transition-all duration-500 group-hover:scale-110 group-hover:rounded-3xl`}
+        >
+          {/* Floating dots decoration */}
+          <span className="absolute -top-2 -right-2 w-3 h-3 rounded-full bg-accent/40 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
+          <span className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full bg-accent/30 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
+          <span className="absolute top-1/2 -left-3 w-2.5 h-2.5 rounded-full bg-accent/20 animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
+
+          {/* Icon with float animation */}
+          <service.icon
+            className={`w-14 h-14 md:w-20 md:h-20 ${service.color} transition-transform duration-500`}
+            style={{
+              animation: `serviceFloat 3s ease-in-out infinite`,
+              animationDelay: `${service.delay * 0.4}s`,
+            }}
+            strokeWidth={1.5}
+          />
+        </div>
       </div>
-      <h3 className="text-lg font-bold text-foreground mb-3">{service.title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed mb-4">{service.description}</p>
-      <span className="text-accent text-sm font-semibold inline-flex items-center gap-1 hover:gap-2 transition-all duration-300">
+
+      <h3 className="text-lg md:text-xl font-bold text-foreground mb-3 font-heading">{service.title}</h3>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs mx-auto">{service.description}</p>
+      <a
+        href="#contact"
+        className="inline-block bg-accent text-accent-foreground px-6 py-2.5 rounded-full text-sm font-semibold
+          hover:bg-accent/90 transition-all duration-300 hover:shadow-lg hover:shadow-accent/20"
+      >
         للمزيد من التفاصيل
-        <span className="text-lg">←</span>
-      </span>
+      </a>
     </div>
   );
 };
@@ -95,6 +126,12 @@ const ServicesSection = () => {
 
   return (
     <section id="services" className="py-16 md:py-24 bg-brand-light">
+      <style>{`
+        @keyframes serviceFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
       <div className="container">
         <div
           ref={headerRef}
@@ -102,13 +139,13 @@ const ServicesSection = () => {
             headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-accent mb-3">خدماتنا</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base">
-            نقدم في أسس السلامة والعمارة خدمات هندسية متكاملة من التصميم حتى التسليم
+          <h2 className="text-3xl md:text-4xl font-bold text-accent mb-3 font-heading">خدماتنا</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base">
+            نحن في أسس السلامة والعمارة للاستشارات الهندسية نقدم خدمات هندسية متكاملة من التصميم حتى التسليم
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, index) => (
             <ServiceCard key={service.title} service={service} index={index} />
           ))}
