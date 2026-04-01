@@ -1,10 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const images = Array.from({ length: 21 }, (_, i) => `/gallery/project-${i + 1}.jpg`);
+
+const GalleryImage = ({ src, index, onClick }: { src: string; index: number; onClick: () => void }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: (index % 4) * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="break-inside-avoid group relative rounded-xl overflow-hidden cursor-pointer"
+      onClick={onClick}
+      whileHover={{ y: -6 }}
+    >
+      <motion.img
+        src={src}
+        alt={`مشروع ${index + 1}`}
+        className="w-full object-cover"
+        loading="lazy"
+        whileHover={{ scale: 1.08 }}
+        transition={{ duration: 0.5 }}
+      />
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center pb-4"
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.span
+          className="text-sm font-medium bg-accent text-accent-foreground px-4 py-1.5 rounded-full"
+          initial={{ y: 10, opacity: 0 }}
+          whileHover={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          عرض المشروع
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const Gallery = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -17,6 +73,17 @@ const Gallery = () => {
   const goNext = () =>
     setSelectedIndex((prev) => (prev !== null ? (prev + 1) % images.length : null));
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (selectedIndex === null) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") goNext();
+      if (e.key === "ArrowRight") goPrev();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selectedIndex]);
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -24,7 +91,12 @@ const Gallery = () => {
       <section className="pt-28 pb-16 md:pt-36 md:pb-24 section-dark">
         <div className="container">
           {/* Header */}
-          <div className="flex items-center justify-between mb-10">
+          <motion.div
+            className="flex items-center justify-between mb-10"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <div>
               <h1 className="text-2xl md:text-4xl font-bold mb-2">معرض أعمالنا</h1>
               <p className="text-primary-foreground/60 text-sm md:text-base">
@@ -38,72 +110,78 @@ const Gallery = () => {
               <ArrowRight className="w-4 h-4" />
               العودة للرئيسية
             </Link>
-          </div>
+          </motion.div>
 
           {/* Grid */}
           <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
             {images.map((src, i) => (
-              <div
-                key={i}
-                className="break-inside-avoid group relative rounded-lg overflow-hidden cursor-pointer"
-                onClick={() => openLightbox(i)}
-              >
-                <img
-                  src={src}
-                  alt={`مشروع ${i + 1}`}
-                  className="w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-primary-foreground text-sm font-medium bg-accent px-3 py-1.5 rounded-md">
-                    عرض
-                  </span>
-                </div>
-              </div>
+              <GalleryImage key={i} src={src} index={i} onClick={() => openLightbox(i)} />
             ))}
           </div>
         </div>
       </section>
 
       {/* Lightbox */}
-      {selectedIndex !== null && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
-          onClick={closeLightbox}
-        >
-          <button
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <motion.div
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             onClick={closeLightbox}
-            className="absolute top-4 left-4 text-white/80 hover:text-white z-10"
           >
-            <X className="w-8 h-8" />
-          </button>
+            <motion.button
+              onClick={closeLightbox}
+              className="absolute top-4 left-4 text-white/80 hover:text-white z-10"
+              whileHover={{ scale: 1.2, rotate: 90 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
 
-          <button
-            onClick={(e) => { e.stopPropagation(); goNext(); }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
-          >
-            <ChevronRight className="w-10 h-10" />
-          </button>
+            <motion.button
+              onClick={(e) => { e.stopPropagation(); goNext(); }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
+              whileHover={{ scale: 1.2, x: 4 }}
+            >
+              <ChevronRight className="w-10 h-10" />
+            </motion.button>
 
-          <button
-            onClick={(e) => { e.stopPropagation(); goPrev(); }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
-          >
-            <ChevronLeft className="w-10 h-10" />
-          </button>
+            <motion.button
+              onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
+              whileHover={{ scale: 1.2, x: -4 }}
+            >
+              <ChevronLeft className="w-10 h-10" />
+            </motion.button>
 
-          <img
-            src={images[selectedIndex]}
-            alt={`مشروع ${selectedIndex + 1}`}
-            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={selectedIndex}
+                src={images[selectedIndex]}
+                alt={`مشروع ${selectedIndex + 1}`}
+                className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.85 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </AnimatePresence>
 
-          <div className="absolute bottom-4 text-white/60 text-sm">
-            {selectedIndex + 1} / {images.length}
-          </div>
-        </div>
-      )}
+            <motion.div
+              className="absolute bottom-4 text-white/60 text-sm"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {selectedIndex + 1} / {images.length}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>
