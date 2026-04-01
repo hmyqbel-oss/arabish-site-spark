@@ -44,7 +44,7 @@ const ProjectsSection = () => {
 
         <div className="text-center mt-10">
           <a
-            href="#projects"
+            href="/gallery"
             className="inline-block border border-primary-foreground/30 text-primary-foreground/80 px-8 py-3 rounded-md hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
           >
             معرض أعمالنا
