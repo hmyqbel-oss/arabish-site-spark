@@ -1,5 +1,6 @@
 import { Ruler, HardHat, ShieldCheck, Wrench, TrafficCone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useGlowBorder } from "@/hooks/useGlowBorder";
 
 const services = [
   {
@@ -8,6 +9,7 @@ const services = [
     description: "يتخصص مهندسونا في تقديم خدمات التصميم بكافة مراحله بدءاً من إعداد التصاميم الأولية وانتهاءً بالمخططات التنفيذية.",
     color: "text-accent",
     bgColor: "bg-accent/10",
+    accent: "hsl(0, 78%, 50%)",
     delay: 0,
     href: "/services/design",
   },
@@ -17,6 +19,7 @@ const services = [
     description: "نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في الإشراف على تنفيذ المشاريع الهندسية.",
     color: "text-amber-500",
     bgColor: "bg-amber-50",
+    accent: "hsl(38, 92%, 50%)",
     delay: 1,
     href: "/services/supervision",
   },
@@ -26,6 +29,7 @@ const services = [
     description: "أحد أهم أقسام الشركة والذي يقدم حلول سلامة متكاملة تشمل تقييم المخاطر وخطط الطوارئ والتدريب.",
     color: "text-teal-500",
     bgColor: "bg-teal-50",
+    accent: "hsl(162, 63%, 41%)",
     delay: 2,
     href: "/services/safety",
   },
@@ -35,6 +39,7 @@ const services = [
     description: "نقدم حلولاً تقنية متخصصة وتوجيهات لضمان تنفيذ المشاريع بكفاءة وفق المعايير الهندسية المطلوبة.",
     color: "text-indigo-500",
     bgColor: "bg-indigo-50",
+    accent: "hsl(239, 84%, 67%)",
     delay: 3,
     href: "/services/technical",
   },
@@ -44,14 +49,16 @@ const services = [
     description: "نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في دراسات وتحليل السلامة المرورية.",
     color: "text-orange-500",
     bgColor: "bg-orange-50",
+    accent: "hsl(25, 95%, 53%)",
     delay: 4,
     href: "/services/traffic",
   },
 ];
 
 const ServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { ref: glowRef, glowStyle } = useGlowBorder<HTMLDivElement>(service.accent);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,17 +70,20 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
       },
       { threshold: 0.2 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
     <div
-      ref={ref}
-      style={{ transitionDelay: `${index * 150}ms` }}
-      className={`bg-card rounded-2xl p-6 md:p-8 border border-border group cursor-pointer
+      ref={(node) => {
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        (glowRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }}
+      style={{ ...glowStyle, transitionDelay: `${index * 150}ms` }}
+      className={`bg-card rounded-2xl p-6 md:p-8 border-2 group cursor-pointer
         transition-all duration-700 ease-out text-center
-        hover:shadow-2xl hover:-translate-y-3 hover:border-accent/20
+        hover:shadow-2xl hover:-translate-y-3
         ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
     >
       {/* Animated Icon Container */}
@@ -81,12 +91,10 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
         <div className={`relative w-28 h-28 md:w-36 md:h-36 ${service.bgColor} rounded-2xl flex items-center justify-center
           transition-all duration-500 group-hover:scale-110 group-hover:rounded-3xl`}
         >
-          {/* Floating dots decoration */}
           <span className="absolute -top-2 -right-2 w-3 h-3 rounded-full bg-accent/40 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
           <span className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full bg-accent/30 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
           <span className="absolute top-1/2 -left-3 w-2.5 h-2.5 rounded-full bg-accent/20 animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
 
-          {/* Icon with float animation */}
           <service.icon
             className={`w-14 h-14 md:w-20 md:h-20 ${service.color} transition-transform duration-500`}
             style={{

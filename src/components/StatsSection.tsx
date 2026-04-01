@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Award, FileText, Rocket, UserPlus } from "lucide-react";
+import { useGlowBorder } from "@/hooks/useGlowBorder";
 
 const stats = [
-  { value: 20, suffix: "", label: "سنوات الخبرة", icon: Award, color: "text-yellow-500" },
-  { value: 54, suffix: "", label: "مشاريع جاري العمل عليها", icon: FileText, color: "text-blue-500" },
-  { value: 1800, suffix: "+", label: "مشاريع مكتملة", icon: Rocket, color: "text-red-500" },
-  { value: 2593, suffix: "+", label: "عميل سعيد", icon: UserPlus, color: "text-blue-400" },
+  { value: 20, suffix: "", label: "سنوات الخبرة", icon: Award, accent: "hsl(48, 96%, 53%)" },
+  { value: 54, suffix: "", label: "مشاريع جاري العمل عليها", icon: FileText, accent: "hsl(217, 91%, 60%)" },
+  { value: 1800, suffix: "+", label: "مشاريع مكتملة", icon: Rocket, accent: "hsl(0, 78%, 50%)" },
+  { value: 2593, suffix: "+", label: "عميل سعيد", icon: UserPlus, accent: "hsl(199, 89%, 48%)" },
 ];
 
 const CountUp = ({ target, suffix }: { target: number; suffix: string }) => {
@@ -49,6 +50,27 @@ const CountUp = ({ target, suffix }: { target: number; suffix: string }) => {
   );
 };
 
+const StatCard = ({ stat }: { stat: typeof stats[0] }) => {
+  const { ref, glowStyle } = useGlowBorder<HTMLDivElement>(stat.accent);
+  const Icon = stat.icon;
+
+  return (
+    <div
+      ref={ref}
+      style={glowStyle}
+      className="relative rounded-2xl border-2 bg-card p-6 md:p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+    >
+      <div className="mb-4 inline-flex" style={{ color: stat.accent }}>
+        <Icon className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+      </div>
+      <CountUp target={stat.value} suffix={stat.suffix} />
+      <p className="mt-2 text-sm md:text-base font-medium text-muted-foreground">
+        {stat.label}
+      </p>
+    </div>
+  );
+};
+
 const StatsSection = () => {
   return (
     <section className="py-16 md:py-20 bg-background">
@@ -63,23 +85,9 @@ const StatsSection = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={stat.label}
-                className="relative rounded-2xl border-2 border-blue-400/60 bg-card p-6 md:p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className={`mb-4 inline-flex ${stat.color}`}>
-                  <Icon className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
-                </div>
-                <CountUp target={stat.value} suffix={stat.suffix} />
-                <p className="mt-2 text-sm md:text-base font-medium text-muted-foreground">
-                  {stat.label}
-                </p>
-              </div>
-            );
-          })}
+          {stats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} />
+          ))}
         </div>
       </div>
     </section>
