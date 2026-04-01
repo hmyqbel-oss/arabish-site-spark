@@ -1,13 +1,8 @@
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
-import project4 from "@/assets/project-4.jpg";
-
 const projects = [
-  { image: project1, title: "فيلا سكنية", category: "سكني" },
-  { image: project2, title: "مبنى تجاري", category: "تجاري" },
-  { image: project3, title: "مشروع تعليمي", category: "تعليمي" },
-  { image: project4, title: "مجمع سكني", category: "سكني" },
+  { image: "/gallery/project-4.jpg", title: "فيلا سكنية فاخرة", category: "سكني" },
+  { image: "/gallery/project-7.jpg", title: "مبنى تجاري", category: "تجاري" },
+  { image: "/gallery/project-2.jpg", title: "تصميم معماري حديث", category: "تصميم" },
+  { image: "/gallery/project-8.jpg", title: "مجمع تجاري", category: "تجاري" },
 ];
 
 const ProjectsSection = () => {
@@ -21,18 +16,18 @@ const ProjectsSection = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {projects.map((project) => (
-            <div key={project.title} className="group relative rounded-lg overflow-hidden cursor-pointer">
+            <div key={project.title} className="group relative rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent/40 transition-all duration-500">
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
                 width={800}
                 height={600}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-5">
                 <div>
-                  <span className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded mb-2 inline-block">
+                  <span className="text-xs bg-accent text-accent-foreground px-3 py-1 rounded-md mb-2 inline-block font-medium">
                     {project.category}
                   </span>
                   <h3 className="text-primary-foreground font-bold text-base">{project.title}</h3>
