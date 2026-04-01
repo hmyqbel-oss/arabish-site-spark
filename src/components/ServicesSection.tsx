@@ -9,6 +9,7 @@ const services = [
     color: "text-accent",
     bgColor: "bg-accent/10",
     delay: 0,
+    href: "/services/design",
   },
   {
     icon: HardHat,
@@ -17,6 +18,7 @@ const services = [
     color: "text-amber-500",
     bgColor: "bg-amber-50",
     delay: 1,
+    href: "/services/supervision",
   },
   {
     icon: ShieldCheck,
@@ -25,6 +27,7 @@ const services = [
     color: "text-teal-500",
     bgColor: "bg-teal-50",
     delay: 2,
+    href: "/services/safety",
   },
   {
     icon: Wrench,
@@ -33,6 +36,7 @@ const services = [
     color: "text-indigo-500",
     bgColor: "bg-indigo-50",
     delay: 3,
+    href: "/services/technical",
   },
   {
     icon: TrafficCone,
@@ -41,6 +45,7 @@ const services = [
     color: "text-orange-500",
     bgColor: "bg-orange-50",
     delay: 4,
+    href: "/services/traffic",
   },
 ];
 
@@ -96,7 +101,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
       <h3 className="text-lg md:text-xl font-bold text-foreground mb-3 font-heading">{service.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs mx-auto">{service.description}</p>
       <a
-        href="#contact"
+        href={service.href}
         className="inline-block bg-accent text-accent-foreground px-6 py-2.5 rounded-full text-sm font-semibold
           hover:bg-accent/90 transition-all duration-300 hover:shadow-lg hover:shadow-accent/20"
       >
