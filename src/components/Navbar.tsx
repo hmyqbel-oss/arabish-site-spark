@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import logo from "@/assets/logo.png";
+
+const serviceLinks = [
+  { label: "السلامة الهندسية", href: "#services" },
+  { label: "الإشراف", href: "#services" },
+  { label: "التصميم", href: "#services" },
+  { label: "الخدمات الإستشارية والدعم الفني", href: "#services" },
+  { label: "الدراسات المرورية", href: "#services" },
+  { label: "الأعمال المساحية", href: "#services" },
+];
 
 const navLinks = [
   { label: "الرئيسية", href: "#hero" },
-  { label: "خدماتنا", href: "#services" },
   { label: "مشاريعنا", href: "#projects" },
   { label: "من نحن", href: "#about" },
   { label: "تواصل معنا", href: "#contact" },
@@ -12,6 +20,8 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-primary-foreground/10">
@@ -23,7 +33,48 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          <a
+            href="#hero"
+            className="text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+          >
+            الرئيسية
+          </a>
+
+          {/* Services Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setServicesOpen(true)}
+            onMouseLeave={() => setServicesOpen(false)}
+          >
+            <a
+              href="#services"
+              className="flex items-center gap-1 text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+            >
+              خدماتنا
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
+            </a>
+
+            {/* Dropdown with orange top border like reference */}
+            <div
+              className={`absolute top-full right-0 mt-0 pt-2 transition-all duration-200 ${
+                servicesOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
+              }`}
+            >
+              <div className="bg-white rounded-md shadow-xl min-w-[250px] border-t-[3px] border-accent overflow-hidden">
+                {serviceLinks.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.href}
+                    className="block px-6 py-3 text-sm text-foreground hover:bg-accent/10 hover:text-accent transition-colors border-b border-border/30 last:border-b-0"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {navLinks.slice(1).map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -58,8 +109,35 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-primary border-t border-primary-foreground/10">
-          <div className="container py-4 flex flex-col gap-3">
-            {navLinks.map((link) => (
+          <div className="container py-4 flex flex-col gap-1">
+            <a href="#hero" onClick={() => setIsOpen(false)} className="text-primary-foreground/80 hover:text-accent transition-colors py-2 text-sm">
+              الرئيسية
+            </a>
+
+            {/* Mobile Services Accordion */}
+            <button
+              onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+              className="flex items-center justify-between text-primary-foreground/80 hover:text-accent transition-colors py-2 text-sm w-full"
+            >
+              خدماتنا
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`} />
+            </button>
+            {mobileServicesOpen && (
+              <div className="pr-4 flex flex-col gap-1 border-r-2 border-accent mr-2">
+                {serviceLinks.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-primary-foreground/60 hover:text-accent transition-colors py-1.5 text-xs"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {navLinks.slice(1).map((link) => (
               <a
                 key={link.href}
                 href={link.href}
