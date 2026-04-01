@@ -101,7 +101,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
       <h3 className="text-lg md:text-xl font-bold text-foreground mb-3 font-heading">{service.title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed mb-5 max-w-xs mx-auto">{service.description}</p>
       <a
-        href="#contact"
+        href={service.href}
         className="inline-block bg-accent text-accent-foreground px-6 py-2.5 rounded-full text-sm font-semibold
           hover:bg-accent/90 transition-all duration-300 hover:shadow-lg hover:shadow-accent/20"
       >
