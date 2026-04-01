@@ -58,7 +58,9 @@ const StatCard = ({ stat }: { stat: typeof stats[0] }) => {
     <div
       ref={ref}
       style={glowStyle}
-      className="relative rounded-2xl border-2 bg-card p-6 md:p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      className="relative rounded-2xl border-2 bg-card p-6 md:p-8 text-center transition-all duration-500 hover:-translate-y-1"
+      onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 8px 32px -4px ${stat.accent.replace(')', ' / 0.45)')}`}
+      onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
     >
       <div className="mb-4 inline-flex" style={{ color: stat.accent }}>
         <Icon className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />

@@ -81,9 +81,11 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
         (glowRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }}
       style={{ ...glowStyle, transitionDelay: `${index * 150}ms` }}
+      onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 12px 40px -6px ${service.accent.replace(')', ' / 0.4)')}`}
+      onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
       className={`bg-card rounded-2xl p-6 md:p-8 border-2 group cursor-pointer
         transition-all duration-700 ease-out text-center
-        hover:shadow-2xl hover:-translate-y-3
+        hover:-translate-y-3
         ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
     >
       {/* Animated Icon Container */}
