@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { Award, FileText, Rocket, UserPlus } from "lucide-react";
 
 const stats = [
-  { value: 500, suffix: "+", label: "عميل سعيد" },
-  { value: 350, suffix: "+", label: "مشاريع مكتملة" },
-  { value: 25, suffix: "", label: "مشاريع جاري العمل عليها" },
-  { value: 15, suffix: "+", label: "سنوات الخبرة" },
+  { value: 20, suffix: "", label: "سنوات الخبرة", icon: Award, color: "text-yellow-500" },
+  { value: 54, suffix: "", label: "مشاريع جاري العمل عليها", icon: FileText, color: "text-blue-500" },
+  { value: 1800, suffix: "+", label: "مشاريع مكتملة", icon: Rocket, color: "text-red-500" },
+  { value: 2593, suffix: "+", label: "عميل سعيد", icon: UserPlus, color: "text-blue-400" },
 ];
 
 const CountUp = ({ target, suffix }: { target: number; suffix: string }) => {
@@ -38,9 +39,12 @@ const CountUp = ({ target, suffix }: { target: number; suffix: string }) => {
     return () => observer.disconnect();
   }, [target]);
 
+  const formatted = count.toLocaleString("en-US");
+
   return (
-    <div ref={ref} className="text-4xl md:text-5xl font-bold text-accent">
-      {count}{suffix}
+    <div ref={ref} className="text-3xl md:text-4xl font-bold text-foreground">
+      {suffix && <span className="ml-1">{suffix}</span>}
+      {formatted}
     </div>
   );
 };
@@ -58,15 +62,24 @@ const StatsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <CountUp target={stat.value} suffix={stat.suffix} />
-              <p className="mt-2 text-sm md:text-base font-medium text-muted-foreground">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div
+                key={stat.label}
+                className="relative rounded-2xl border-2 border-blue-400/60 bg-card p-6 md:p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div className={`mb-4 inline-flex ${stat.color}`}>
+                  <Icon className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                </div>
+                <CountUp target={stat.value} suffix={stat.suffix} />
+                <p className="mt-2 text-sm md:text-base font-medium text-muted-foreground">
+                  {stat.label}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
