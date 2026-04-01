@@ -9,6 +9,7 @@ const services = [
     color: "text-accent",
     bgColor: "bg-accent/10",
     delay: 0,
+    href: "/services/design",
   },
   {
     icon: HardHat,
@@ -17,6 +18,7 @@ const services = [
     color: "text-amber-500",
     bgColor: "bg-amber-50",
     delay: 1,
+    href: "/services/supervision",
   },
   {
     icon: ShieldCheck,
@@ -25,6 +27,7 @@ const services = [
     color: "text-teal-500",
     bgColor: "bg-teal-50",
     delay: 2,
+    href: "/services/safety",
   },
   {
     icon: Wrench,
@@ -33,6 +36,7 @@ const services = [
     color: "text-indigo-500",
     bgColor: "bg-indigo-50",
     delay: 3,
+    href: "/services/technical",
   },
   {
     icon: TrafficCone,
@@ -41,6 +45,7 @@ const services = [
     color: "text-orange-500",
     bgColor: "bg-orange-50",
     delay: 4,
+    href: "/services/traffic",
   },
 ];
 
