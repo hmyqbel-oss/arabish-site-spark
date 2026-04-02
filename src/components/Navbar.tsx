@@ -56,7 +56,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#hero"
-            className="text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+            className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
