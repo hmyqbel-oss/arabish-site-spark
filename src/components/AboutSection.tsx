@@ -31,12 +31,11 @@ const AboutSection = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">من نحن</h2>
             <div className="w-16 h-1 bg-accent rounded mb-6" />
             <p className="text-muted-foreground leading-relaxed mb-4 text-sm md:text-base">
-              شركة أسس السلامة والعمارة للاستشارات الهندسية شركة سعودية رائدة بخبرة تتجاوز 15 عاماً
-              في مجال الاستشارات الهندسية وأعمال السلامة والعمارة.
+              شركة أسس السلامة والعمارة للاستشارات الهندسية شركة في مجال الاستشارات الهندسية وأعمال السلامة والعمارة.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6 text-sm md:text-base">
-              معاً نبني مستقبل أفضل، ولأن المملكة في طريقها نحو رؤية 2030 كان لا بد أن نطور أعمالنا
-              ونضيف العديد من الخدمات المتخصصة لتلبية احتياجات السوق المتنامية.
+              معاً نبني مستقبل أفضل، ولأن المملكة في طريقها نحو رؤية 2030 كان لا بد أن نطور أعمالنا ونضيف العديد من
+              الخدمات المتخصصة لتلبية احتياجات السوق المتنامية.
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-brand-light rounded-lg p-4 text-center">
