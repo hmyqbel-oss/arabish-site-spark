@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
@@ -14,10 +15,10 @@ const serviceLinks = [
 ];
 
 const navLinks = [
-  { label: "الرئيسية", href: "#hero" },
-  { label: "مشاريعنا", href: "#projects" },
-  { label: "من نحن", href: "#about" },
-  { label: "تواصل معنا", href: "#contact" },
+  { label: "الرئيسية", href: "/#hero" },
+  { label: "مشاريعنا", href: "/#projects" },
+  { label: "من نحن", href: "/#about" },
+  { label: "تواصل معنا", href: "/#contact" },
 ];
 
 const Navbar = () => {
@@ -25,6 +26,10 @@ const Navbar = () => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  // On non-home pages, always use dark text style (as if scrolled)
+  const useDarkText = scrolled || !isHome;
 
   useEffect(() => {
     if (open) {
@@ -42,21 +47,21 @@ const Navbar = () => {
       <nav
         className={cn(
           "container flex items-center justify-between h-14 md:h-16 rounded-full px-6 transition-all duration-500",
-          scrolled
+          useDarkText
             ? "bg-background/80 backdrop-blur-md border border-border/50 shadow-[0_2px_20px_-2px_rgba(0,0,0,0.1)]"
             : "bg-transparent"
         )}
       >
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 relative z-50">
-          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", scrolled ? "" : "brightness-0 invert")} />
+        <a href="/" className="flex items-center gap-3 relative z-50">
+          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", useDarkText ? "" : "brightness-0 invert")} />
         </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <a
-            href="#hero"
-            className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+            href="/#hero"
+            className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
@@ -68,8 +73,8 @@ const Navbar = () => {
             onMouseLeave={() => setServicesOpen(false)}
           >
             <a
-              href="#services"
-              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              href="/#services"
+              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
@@ -99,7 +104,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
             </a>
@@ -109,7 +114,7 @@ const Navbar = () => {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href="#contact"
+            href="/#contact"
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -120,7 +125,7 @@ const Navbar = () => {
         {/* Mobile Toggle - Animated Icon */}
         <button
           onClick={() => setOpen(!open)}
-          className={cn("md:hidden p-2 relative z-50", scrolled ? "text-foreground" : "text-primary-foreground")}
+          className={cn("md:hidden p-2 relative z-50", useDarkText ? "text-foreground" : "text-primary-foreground")}
           aria-label="القائمة"
         >
           <MenuToggleIcon open={open} className="w-7 h-7" />
@@ -144,7 +149,7 @@ const Navbar = () => {
             )}
           >
             <a
-              href="#hero"
+              href="/#hero"
               onClick={() => setOpen(false)}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
@@ -199,7 +204,7 @@ const Navbar = () => {
             )}
           >
             <a
-              href="#contact"
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
