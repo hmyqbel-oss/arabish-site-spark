@@ -1,5 +1,5 @@
 const WhatsAppButton = () => {
-  const phoneNumber = "966XXXXXXXXX"; // رقم الواتساب
+  const phoneNumber = "966532458219";
 
   return (
     <a
