@@ -73,8 +73,8 @@ const Navbar = () => {
             onMouseLeave={() => setServicesOpen(false)}
           >
             <a
-              href="#services"
-              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              href="/#services"
+              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
