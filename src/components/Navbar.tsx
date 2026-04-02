@@ -125,7 +125,7 @@ const Navbar = () => {
         {/* Mobile Toggle - Animated Icon */}
         <button
           onClick={() => setOpen(!open)}
-          className={cn("md:hidden p-2 relative z-50", scrolled ? "text-foreground" : "text-primary-foreground")}
+          className={cn("md:hidden p-2 relative z-50", useDarkText ? "text-foreground" : "text-primary-foreground")}
           aria-label="القائمة"
         >
           <MenuToggleIcon open={open} className="w-7 h-7" />
