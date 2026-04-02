@@ -26,6 +26,10 @@ const Navbar = () => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  // On non-home pages, always use dark text style (as if scrolled)
+  const useDarkText = scrolled || !isHome;
 
   useEffect(() => {
     if (open) {
