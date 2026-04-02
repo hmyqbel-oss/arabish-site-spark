@@ -49,7 +49,7 @@ const Navbar = () => {
       >
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 relative z-50">
-          <img src={logo} alt="OSAEC" className="h-12 md:h-14 w-auto brightness-0 invert" />
+          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", scrolled ? "" : "brightness-0 invert")} />
         </a>
 
         {/* Desktop Nav */}
