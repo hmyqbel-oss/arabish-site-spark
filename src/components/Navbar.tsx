@@ -38,25 +38,25 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300",
-        scrolled
-          ? "bg-primary/95 backdrop-blur-md border-b border-primary-foreground/10 shadow-lg"
-          : "bg-transparent"
-      )}
-    >
-      <nav className="container flex items-center justify-between h-16 md:h-20">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full py-2 px-4 transition-all duration-300">
+      <nav
+        className={cn(
+          "container flex items-center justify-between h-14 md:h-16 rounded-full px-6 transition-all duration-500",
+          scrolled
+            ? "bg-background/80 backdrop-blur-md border border-border/50 shadow-[0_2px_20px_-2px_rgba(0,0,0,0.1)]"
+            : "bg-transparent"
+        )}
+      >
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 relative z-50">
-          <img src={logo} alt="OSAEC" className="h-12 md:h-14 w-auto brightness-0 invert" />
+          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", scrolled ? "" : "brightness-0 invert")} />
         </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#hero"
-            className="text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+            className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
@@ -69,7 +69,7 @@ const Navbar = () => {
           >
             <a
               href="#services"
-              className="flex items-center gap-1 text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
@@ -99,7 +99,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+              className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
             </a>
@@ -110,7 +110,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="#contact"
-            className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors"
+            className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
             استشارة مجانية
@@ -120,7 +120,7 @@ const Navbar = () => {
         {/* Mobile Toggle - Animated Icon */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-primary-foreground p-2 relative z-50"
+          className={cn("md:hidden p-2 relative z-50", scrolled ? "text-foreground" : "text-primary-foreground")}
           aria-label="القائمة"
         >
           <MenuToggleIcon open={open} className="w-7 h-7" />
