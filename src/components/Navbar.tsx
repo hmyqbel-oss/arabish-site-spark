@@ -149,7 +149,7 @@ const Navbar = () => {
             )}
           >
             <a
-              href="#hero"
+              href="/#hero"
               onClick={() => setOpen(false)}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
