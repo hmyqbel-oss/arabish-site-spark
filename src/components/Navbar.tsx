@@ -38,15 +38,15 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300",
-        scrolled
-          ? "bg-primary/95 backdrop-blur-md border-b border-primary-foreground/10 shadow-lg"
-          : "bg-transparent"
-      )}
-    >
-      <nav className="container flex items-center justify-between h-16 md:h-20">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full py-2 px-4 transition-all duration-300">
+      <nav
+        className={cn(
+          "container flex items-center justify-between h-14 md:h-16 rounded-full px-6 transition-all duration-500",
+          scrolled
+            ? "bg-background/80 backdrop-blur-md border border-border/50 shadow-[0_2px_20px_-2px_rgba(0,0,0,0.1)]"
+            : "bg-transparent"
+        )}
+      >
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 relative z-50">
           <img src={logo} alt="OSAEC" className="h-12 md:h-14 w-auto brightness-0 invert" />
