@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Phone, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
+import { useScroll } from "@/components/ui/use-scroll";
 import logo from "@/assets/logo.png";
 
 const serviceLinks = [
@@ -18,15 +21,34 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const scrolled = useScroll(10);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-primary-foreground/10">
-      <div className="container flex items-center justify-between h-16 md:h-20">
+    <header
+      className={cn(
+        "fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "bg-primary/95 backdrop-blur-md border-b border-primary-foreground/10 shadow-lg"
+          : "bg-transparent"
+      )}
+    >
+      <nav className="container flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3">
+        <a href="#hero" className="flex items-center gap-3 relative z-50">
           <img src={logo} alt="OSAEC" className="h-12 md:h-14 w-auto brightness-0 invert" />
         </a>
 
@@ -50,14 +72,14 @@ const Navbar = () => {
               className="flex items-center gap-1 text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
             >
               خدماتنا
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
             </a>
 
-            {/* Dropdown with orange top border like reference */}
             <div
-              className={`absolute top-full right-0 mt-0 pt-2 transition-all duration-200 ${
+              className={cn(
+                "absolute top-full right-0 mt-0 pt-2 transition-all duration-200",
                 servicesOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
-              }`}
+              )}
             >
               <div className="bg-white rounded-md shadow-xl min-w-[250px] border-t-[3px] border-accent overflow-hidden">
                 {serviceLinks.map((link, i) => (
@@ -95,68 +117,99 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle - Animated Icon */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-primary-foreground p-2"
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-primary-foreground p-2 relative z-50"
           aria-label="القائمة"
         >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <MenuToggleIcon open={open} className="w-7 h-7" />
         </button>
-      </div>
+      </nav>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-primary border-t border-primary-foreground/10">
-          <div className="container py-4 flex flex-col gap-1">
-            <a href="#hero" onClick={() => setIsOpen(false)} className="text-primary-foreground/80 hover:text-accent transition-colors py-2 text-sm">
+      {/* Mobile Menu - Full Screen Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-primary/98 backdrop-blur-xl transition-all duration-500 md:hidden flex flex-col",
+          open
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
+        )}
+      >
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
+          <div
+            className={cn(
+              "flex flex-col items-center gap-1 w-full max-w-sm transition-all duration-500 delay-100",
+              open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
+            <a
+              href="#hero"
+              onClick={() => setOpen(false)}
+              className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
+            >
               الرئيسية
             </a>
 
             {/* Mobile Services Accordion */}
             <button
               onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-              className="flex items-center justify-between text-primary-foreground/80 hover:text-accent transition-colors py-2 text-sm w-full"
+              className="flex items-center justify-center gap-2 text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full"
             >
               خدماتنا
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={cn("w-5 h-5 transition-transform duration-300", mobileServicesOpen && "rotate-180")} />
             </button>
-            {mobileServicesOpen && (
-              <div className="pr-4 flex flex-col gap-1 border-r-2 border-accent mr-2">
+
+            <div
+              className={cn(
+                "overflow-hidden transition-all duration-300 w-full",
+                mobileServicesOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
+              <div className="flex flex-col gap-1 border-r-2 border-accent mr-auto pr-4 w-fit mx-auto">
                 {serviceLinks.map((link, i) => (
                   <a
                     key={i}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-primary-foreground/60 hover:text-accent transition-colors py-1.5 text-xs"
+                    onClick={() => setOpen(false)}
+                    className="text-primary-foreground/60 hover:text-accent transition-colors py-2 text-sm text-center"
                   >
                     {link.label}
                   </a>
                 ))}
               </div>
-            )}
+            </div>
 
             {navLinks.slice(1).map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-primary-foreground/80 hover:text-accent transition-colors py-2 text-sm"
+                onClick={() => setOpen(false)}
+                className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
               >
                 {link.label}
               </a>
             ))}
+          </div>
+
+          <div
+            className={cn(
+              "flex flex-col items-center gap-3 mt-6 w-full max-w-sm transition-all duration-500 delay-200",
+              open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
             <a
               href="#contact"
-              onClick={() => setIsOpen(false)}
-              className="bg-accent text-accent-foreground px-5 py-2.5 rounded-md text-sm font-semibold text-center mt-2"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
+              <Phone className="w-5 h-5" />
               استشارة مجانية
             </a>
           </div>
         </div>
-      )}
-    </nav>
+      </div>
+    </header>
   );
 };
 
