@@ -20,7 +20,7 @@ const ClientLogo = ({ client }: { client: { name: string; logo: string } }) => (
     <img
       src={client.logo}
       alt={client.name}
-      className="h-16 md:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-all duration-500 hover:scale-110 grayscale hover:grayscale-0"
+      className="h-16 md:h-20 w-auto object-contain transition-all duration-500 hover:scale-110"
       loading="lazy"
     />
   </div>
