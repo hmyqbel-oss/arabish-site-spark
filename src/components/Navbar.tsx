@@ -47,21 +47,21 @@ const Navbar = () => {
       <nav
         className={cn(
           "container flex items-center justify-between h-14 md:h-16 rounded-full px-6 transition-all duration-500",
-          scrolled
+          useDarkText
             ? "bg-background/80 backdrop-blur-md border border-border/50 shadow-[0_2px_20px_-2px_rgba(0,0,0,0.1)]"
             : "bg-transparent"
         )}
       >
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 relative z-50">
-          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", scrolled ? "" : "brightness-0 invert")} />
+        <a href="/" className="flex items-center gap-3 relative z-50">
+          <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", useDarkText ? "" : "brightness-0 invert")} />
         </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <a
-            href="#hero"
-            className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+            href="/#hero"
+            className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
