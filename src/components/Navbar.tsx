@@ -99,7 +99,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+              className={cn("transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
             </a>
