@@ -69,7 +69,7 @@ const Navbar = () => {
           >
             <a
               href="#services"
-              className="flex items-center gap-1 text-primary-foreground/80 hover:text-accent transition-colors text-sm font-medium"
+              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", scrolled ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
