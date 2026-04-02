@@ -15,10 +15,10 @@ const serviceLinks = [
 ];
 
 const navLinks = [
-  { label: "الرئيسية", href: "#hero" },
-  { label: "مشاريعنا", href: "#projects" },
-  { label: "من نحن", href: "#about" },
-  { label: "تواصل معنا", href: "#contact" },
+  { label: "الرئيسية", href: "/#hero" },
+  { label: "مشاريعنا", href: "/#projects" },
+  { label: "من نحن", href: "/#about" },
+  { label: "تواصل معنا", href: "/#contact" },
 ];
 
 const Navbar = () => {
