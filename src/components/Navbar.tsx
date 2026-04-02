@@ -204,7 +204,7 @@ const Navbar = () => {
             )}
           >
             <a
-              href="#contact"
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
