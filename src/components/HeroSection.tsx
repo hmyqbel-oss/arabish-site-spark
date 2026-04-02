@@ -15,12 +15,15 @@ const HeroSection = () => {
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const goTo = useCallback((index: number) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrent(index);
-    setTimeout(() => setIsTransitioning(false), 800);
-  }, [isTransitioning]);
+  const goTo = useCallback(
+    (index: number) => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      setCurrent(index);
+      setTimeout(() => setIsTransitioning(false), 800);
+    },
+    [isTransitioning],
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,9 +41,7 @@ const HeroSection = () => {
           src={slide.image}
           alt="خلفية"
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-[1200ms] ease-in-out ${
-            i === current
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-110"
+            i === current ? "opacity-100 scale-100" : "opacity-0 scale-110"
           }`}
           width={1920}
           height={1080}
@@ -64,8 +65,8 @@ const HeroSection = () => {
           {slides[current].subtitle}
         </p>
         <p className="max-w-2xl mx-auto text-sm md:text-base text-primary-foreground/70 leading-relaxed mb-8 animate-fade-in-up animation-delay-400">
-          شركة سعودية رائدة بخبرة تتجاوز 15 عاماً في مجال الاستشارات الهندسية والسلامة والعمارة.
-          معاً نبني مستقبل أفضل نحو رؤية 2030.
+          شركة رائدة في المملكة العربية السعودية في مجال الاستشارات الهندسية والسلامة والعمارة. معاً نبني مستقبل أفضل
+          نحو رؤية 2030.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-600">
           <a
@@ -89,9 +90,7 @@ const HeroSection = () => {
               key={i}
               onClick={() => goTo(i)}
               className={`rounded-full transition-all duration-300 ${
-                i === current
-                  ? "w-8 h-3 bg-accent"
-                  : "w-3 h-3 bg-primary-foreground/40 hover:bg-primary-foreground/60"
+                i === current ? "w-8 h-3 bg-accent" : "w-3 h-3 bg-primary-foreground/40 hover:bg-primary-foreground/60"
               }`}
               aria-label={`الانتقال للشريحة ${i + 1}`}
             />
