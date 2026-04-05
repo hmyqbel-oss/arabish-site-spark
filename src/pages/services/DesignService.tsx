@@ -62,27 +62,30 @@ const FeatureAccordion = ({ feature }: { feature: ServiceFeature }) => {
           open ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 pb-5 space-y-4">
-          {feature.image && (
-            <div className="rounded-lg overflow-hidden border border-border">
-              <img
-                src={feature.image}
-                alt={feature.title}
-                className="w-full h-auto object-contain"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {feature.details && (
-            <ul className="space-y-2 pr-2">
-              {feature.details.map((detail, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                  {detail}
-                </li>
-              ))}
-            </ul>
-          )}
+        <div className="px-4 pb-5">
+          <div className={`flex gap-5 ${feature.image ? "flex-col md:flex-row items-start" : ""}`}>
+            {feature.image && (
+              <div className="md:w-2/5 shrink-0 rounded-xl overflow-hidden border-2 border-accent/10 shadow-md
+                rotate-[-1deg] hover:rotate-0 transition-transform duration-500">
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="w-full h-auto object-contain bg-white p-2"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            {feature.details && (
+              <ul className="space-y-2.5 pr-2 flex-1">
+                {feature.details.map((detail, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                    {detail}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
