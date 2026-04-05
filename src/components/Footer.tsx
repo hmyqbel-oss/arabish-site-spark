@@ -9,8 +9,8 @@ const Footer = () => {
           <div>
             <img src={logo} alt="OSAEC" className="h-14 w-auto brightness-0 invert mb-4" />
             <p className="text-primary-foreground/60 text-sm leading-relaxed">
-              شركة أسس السلامة والعمارة للاستشارات الهندسية شركة سعودية رائدة
-              بخبرة تتجاوز 15 عاماً في الاستشارات الهندسية والسلامة.
+              شركة رائدة في المملكة العربية السعودية في مجال الاستشارات الهندسية والسلامة والعمارة. معاً نبني مستقبل
+              أفضل نحو رؤية 2030.
             </p>
           </div>
 
@@ -26,7 +26,10 @@ const Footer = () => {
                 { label: "تواصل معنا", href: "#contact" },
               ].map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="text-primary-foreground/60 hover:text-accent transition-colors text-sm">
+                  <a
+                    href={link.href}
+                    className="text-primary-foreground/60 hover:text-accent transition-colors text-sm"
+                  >
                     {link.label}
                   </a>
                 </li>
