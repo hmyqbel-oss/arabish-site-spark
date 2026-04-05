@@ -14,7 +14,6 @@ interface ServiceFeature {
 const features: ServiceFeature[] = [
   {
     title: "التصميم المعماري",
-    image: "/services/architectural-plan.png",
     details: [
       "إعداد التصاميم المعمارية للمباني السكنية والتجارية والإدارية",
       "تصميم الفلل والعمائر والمجمعات السكنية",
