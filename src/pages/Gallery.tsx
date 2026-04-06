@@ -31,6 +31,14 @@ const projects: Project[] = [
     area: "810م²",
     location: "الرياض - ديراب",
   },
+  {
+    image: "/gallery/project-residential-villa.jpg",
+    title: "تصميم فيلا سكنية",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "288م²",
+    location: "الرياض - ديراب",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
