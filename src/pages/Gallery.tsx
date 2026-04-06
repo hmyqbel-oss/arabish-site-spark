@@ -63,6 +63,14 @@ const projects: Project[] = [
     area: "898م²",
     location: "الرياض - ضاحية لبن",
   },
+  {
+    image: "/gallery/project-commercial-sulaiman.jpg",
+    title: "عمارة تجارية، شركة السليمان العقارية",
+    category: "تجاري",
+    scope: "تصميم معماري وإنشائي",
+    area: "4750م²",
+    location: "الرياض - خريص",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
