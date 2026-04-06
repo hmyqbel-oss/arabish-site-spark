@@ -47,6 +47,14 @@ const projects: Project[] = [
     area: "1500م²",
     location: "الرياض - نمار",
   },
+  {
+    image: "/gallery/project-duplex-musaif.jpg",
+    title: "تصميم فلل دبلكس",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "780م²",
+    location: "الرياض - المصيف",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
