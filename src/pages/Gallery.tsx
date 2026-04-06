@@ -231,9 +231,17 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
   );
 };
 
+const categories = ["الكل", ...Array.from(new Set(projects.map((p) => p.category)))];
+
 const Gallery = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const images = projects.map((p) => p.image);
+  const [activeCategory, setActiveCategory] = useState("الكل");
+
+  const filteredProjects = activeCategory === "الكل"
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
+
+  const images = filteredProjects.map((p) => p.image);
 
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
@@ -262,32 +270,65 @@ const Gallery = () => {
         <div className="container">
           {/* Header */}
           <motion.div
-            className="flex items-center justify-between mb-10"
+            className="text-center mb-12"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div>
-              <h1 className="text-2xl md:text-4xl font-bold mb-2">معرض أعمالنا</h1>
-              <p className="text-primary-foreground/60 text-sm md:text-base">
-                نماذج من مشاريعنا المنفذة في مختلف القطاعات
-              </p>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="h-px flex-1 max-w-[200px] bg-accent/60" />
+              <h1 className="text-2xl md:text-4xl font-bold">تصفح احدث المشاريع</h1>
+              <div className="h-px flex-1 max-w-[200px] bg-accent/60" />
             </div>
+            <p className="text-primary-foreground/60 text-sm md:text-base mb-2">
+              نماذج من مشاريعنا المنفذة في مختلف القطاعات
+            </p>
             <Link
               to="/"
-              className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors text-sm font-medium"
             >
               <ArrowRight className="w-4 h-4" />
               العودة للرئيسية
             </Link>
           </motion.div>
 
-          {/* Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, i) => (
-              <ProjectCard key={i} project={project} index={i} onImageClick={() => openLightbox(i)} />
+          {/* Filter Buttons */}
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-3 mb-10"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => { setActiveCategory(cat); setSelectedIndex(null); }}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  activeCategory === cat
+                    ? "bg-accent text-accent-foreground shadow-lg"
+                    : "bg-card border border-border text-foreground hover:border-accent/40 hover:text-accent"
+                }`}
+              >
+                {cat}
+              </button>
             ))}
-          </div>
+          </motion.div>
+
+          {/* Grid */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              {filteredProjects.map((project, i) => (
+                <ProjectCard key={project.title + i} project={project} index={i} onImageClick={() => openLightbox(i)} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
