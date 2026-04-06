@@ -55,6 +55,14 @@ const projects: Project[] = [
     area: "780م²",
     location: "الرياض - المصيف",
   },
+  {
+    image: "/gallery/project-duplex-laban.jpg",
+    title: "تصميم فلل دبلكس",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "898م²",
+    location: "الرياض - ضاحية لبن",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
