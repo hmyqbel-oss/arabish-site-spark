@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, X, ChevronLeft, ChevronRight, Maximize2, MapPin } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight, MapPin, Briefcase, Maximize2, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -9,6 +9,7 @@ interface Project {
   image: string;
   title: string;
   category: string;
+  scope?: string;
   area?: string;
   location?: string;
 }
@@ -18,14 +19,13 @@ const projects: Project[] = [
     image: "/gallery/project-villa-modern.jpg",
     title: "تصميم فيلا خاصة بطراز مودرن",
     category: "سكني",
+    scope: "تصميم معماري وإنشائي",
     area: "480م²",
     location: "الرياض - المهدية",
   },
 ];
 
-const images = projects.map((p) => p.image);
-
-const GalleryImage = ({ src, index, onClick }: { src: string; index: number; onClick: () => void }) => {
+const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -49,65 +49,79 @@ const GalleryImage = ({ src, index, onClick }: { src: string; index: number; onC
       ref={ref}
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.5, delay: (index % 4) * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="break-inside-avoid group relative rounded-xl overflow-hidden cursor-pointer bg-muted"
-      onClick={onClick}
-      whileHover={{ y: -6 }}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/30 transition-all duration-500 shadow-sm hover:shadow-xl group"
     >
-      {/* Blur placeholder */}
-      <div
-        className={`absolute inset-0 bg-muted/80 backdrop-blur-xl transition-opacity duration-700 z-[1] ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-      >
-        <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
-      </div>
-      <motion.img
-        src={src}
-        alt={`مشروع ${index + 1}`}
-        className={`w-full object-cover transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        loading="lazy"
-        onLoad={() => setIsLoaded(true)}
-        whileHover={{ scale: 1.08 }}
-        transition={{ duration: 0.5 }}
-      />
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4 z-[2]"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="w-full">
-          <motion.span
-            className="text-xs font-medium bg-accent text-accent-foreground px-3 py-1 rounded-full mb-2 inline-block"
-            initial={{ y: 10, opacity: 0 }}
-            whileHover={{ y: 0, opacity: 1 }}
+      {/* Image */}
+      <div className="relative overflow-hidden cursor-pointer" onClick={onImageClick}>
+        <div
+          className={`absolute inset-0 bg-muted/80 backdrop-blur-xl transition-opacity duration-700 z-[1] ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        >
+          <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
+        </div>
+        <motion.img
+          src={project.image}
+          alt={project.title}
+          className={`w-full h-56 md:h-64 object-cover transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          loading="lazy"
+          onLoad={() => setIsLoaded(true)}
+          whileHover={{ scale: 1.06 }}
+          transition={{ duration: 0.6 }}
+        />
+        <div className="absolute top-3 right-3 z-[2]">
+          <span className="text-xs font-semibold bg-accent text-accent-foreground px-3 py-1 rounded-full shadow-md">
+            {project.category}
+          </span>
+        </div>
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-[1] flex items-center justify-center">
+          <motion.div
+            className="bg-accent/90 text-accent-foreground rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            whileHover={{ scale: 1.1 }}
           >
-            {projects[index]?.category}
-          </motion.span>
-          <h3 className="text-primary-foreground font-bold text-sm mb-1">{projects[index]?.title}</h3>
-          {(projects[index]?.area || projects[index]?.location) && (
-            <div className="flex items-center gap-3 text-primary-foreground/70 text-xs">
-              {projects[index]?.area && (
-                <span className="flex items-center gap-1">
-                  <Maximize2 className="w-3 h-3" />
-                  {projects[index].area}
-                </span>
-              )}
-              {projects[index]?.location && (
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  {projects[index].location}
-                </span>
-              )}
+            <Eye className="w-5 h-5" />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="p-5 space-y-3 text-right">
+        <h3 className="text-foreground font-bold text-base md:text-lg">{project.title}</h3>
+
+        <div className="space-y-2">
+          {project.scope && (
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
+              <Briefcase className="w-4 h-4 text-accent shrink-0" />
+              <span>نطاق العمل: {project.scope}</span>
+            </div>
+          )}
+          {project.area && (
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
+              <Maximize2 className="w-4 h-4 text-accent shrink-0" />
+              <span>المساحة: {project.area}</span>
+            </div>
+          )}
+          {project.location && (
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
+              <MapPin className="w-4 h-4 text-accent shrink-0" />
+              <span>موقع المشروع: {project.location}</span>
             </div>
           )}
         </div>
-      </motion.div>
+
+        <button
+          onClick={onImageClick}
+          className="w-full mt-2 bg-accent hover:bg-accent/90 text-accent-foreground text-sm font-semibold py-2.5 rounded-lg transition-colors"
+        >
+          تفاصيل المشروع
+        </button>
+      </div>
     </motion.div>
   );
 };
 
 const Gallery = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const images = projects.map((p) => p.image);
 
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
@@ -157,9 +171,9 @@ const Gallery = () => {
           </motion.div>
 
           {/* Grid */}
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-            {images.map((src, i) => (
-              <GalleryImage key={i} src={src} index={i} onClick={() => openLightbox(i)} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project, i) => (
+              <ProjectCard key={i} project={project} index={i} onImageClick={() => openLightbox(i)} />
             ))}
           </div>
         </div>
@@ -205,7 +219,7 @@ const Gallery = () => {
               <motion.img
                 key={selectedIndex}
                 src={images[selectedIndex]}
-                alt={`مشروع ${selectedIndex + 1}`}
+                alt={projects[selectedIndex]?.title}
                 className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
