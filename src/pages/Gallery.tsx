@@ -111,6 +111,14 @@ const projects: Project[] = [
     area: "1680م²",
     location: "الرياض - ضاحية نمار",
   },
+  {
+    image: "/gallery/project-maintenance-center.jpg",
+    title: "تصميم مركز صيانة متخصص",
+    category: "تجاري",
+    scope: "تصميم معماري وإنشائي",
+    area: "1275م²",
+    location: "الرياض - حي الحزم",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
