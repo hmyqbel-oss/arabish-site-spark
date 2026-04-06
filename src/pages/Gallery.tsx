@@ -119,6 +119,14 @@ const projects: Project[] = [
     area: "1275م²",
     location: "الرياض - حي الحزم",
   },
+  {
+    image: "/gallery/project-grid-villa4.jpg",
+    title: "جريد فيلا 4",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "3000م²",
+    location: "الرياض - النرجس",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
