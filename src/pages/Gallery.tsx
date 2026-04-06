@@ -127,6 +127,14 @@ const projects: Project[] = [
     area: "3000م²",
     location: "الرياض - النرجس",
   },
+  {
+    image: "/gallery/project-compound-malqa.jpg",
+    title: "مجمع فلل (كمباوند) تفاصيل لايف",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "7911.12م²",
+    location: "شمال الرياض - حي الملقا",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
