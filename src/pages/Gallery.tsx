@@ -39,6 +39,14 @@ const projects: Project[] = [
     area: "288م²",
     location: "الرياض - ديراب",
   },
+  {
+    image: "/gallery/project-penthouse-villas.jpg",
+    title: "تصميم فلل بنت هاوس متلاصقة",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "1500م²",
+    location: "الرياض - نمار",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
