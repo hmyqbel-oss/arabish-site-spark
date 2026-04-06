@@ -103,6 +103,14 @@ const projects: Project[] = [
     area: "1029م²",
     location: "الرياض - ضاحية نمار",
   },
+  {
+    image: "/gallery/project-gas-station.jpg",
+    title: "تصميم محطة وقود",
+    category: "تجاري",
+    scope: "تصميم معماري وإنشائي",
+    area: "1680م²",
+    location: "الرياض - ضاحية نمار",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
