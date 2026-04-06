@@ -95,6 +95,14 @@ const projects: Project[] = [
     area: "1333م²",
     location: "الرياض - حي المصانع",
   },
+  {
+    image: "/gallery/project-mixed-namar2.jpg",
+    title: "تصميم عمارة تجارية سكنية",
+    category: "تجاري - سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "1029م²",
+    location: "الرياض - ضاحية نمار",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
