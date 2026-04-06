@@ -1,8 +1,24 @@
-const projects = [
+import { Maximize2, MapPin, Ruler } from "lucide-react";
+
+interface Project {
+  image: string;
+  title: string;
+  category: string;
+  area?: string;
+  location?: string;
+}
+
+const projects: Project[] = [
+  {
+    image: "/gallery/project-villa-modern.jpg",
+    title: "تصميم فيلا خاصة بطراز مودرن",
+    category: "سكني",
+    area: "480م²",
+    location: "الرياض - المهدية",
+  },
   { image: "/gallery/project-4.jpg", title: "فيلا سكنية فاخرة", category: "سكني" },
   { image: "/gallery/project-7.jpg", title: "مبنى تجاري", category: "تجاري" },
   { image: "/gallery/project-2.jpg", title: "تصميم معماري حديث", category: "تصميم" },
-  { image: "/gallery/project-8.jpg", title: "مجمع تجاري", category: "تجاري" },
 ];
 
 const ProjectsSection = () => {
@@ -25,12 +41,28 @@ const ProjectsSection = () => {
                 width={800}
                 height={600}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-5">
-                <div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-5">
+                <div className="w-full">
                   <span className="text-xs bg-accent text-accent-foreground px-3 py-1 rounded-md mb-2 inline-block font-medium">
                     {project.category}
                   </span>
-                  <h3 className="text-primary-foreground font-bold text-base">{project.title}</h3>
+                  <h3 className="text-primary-foreground font-bold text-base mb-1">{project.title}</h3>
+                  {(project.area || project.location) && (
+                    <div className="flex items-center gap-3 mt-2 text-primary-foreground/70 text-xs">
+                      {project.area && (
+                        <span className="flex items-center gap-1">
+                          <Maximize2 className="w-3 h-3" />
+                          {project.area}
+                        </span>
+                      )}
+                      {project.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {project.location}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
