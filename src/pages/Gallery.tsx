@@ -1,11 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight, Maximize2, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const images = Array.from({ length: 21 }, (_, i) => `/gallery/project-${i + 1}.jpg`);
+interface Project {
+  image: string;
+  title: string;
+  category: string;
+  area?: string;
+  location?: string;
+}
+
+const projects: Project[] = [
+  {
+    image: "/gallery/project-villa-modern.jpg",
+    title: "تصميم فيلا خاصة بطراز مودرن",
+    category: "سكني",
+    area: "480م²",
+    location: "الرياض - المهدية",
+  },
+];
+
+const images = projects.map((p) => p.image);
 
 const GalleryImage = ({ src, index, onClick }: { src: string; index: number; onClick: () => void }) => {
   const ref = useRef<HTMLDivElement>(null);
