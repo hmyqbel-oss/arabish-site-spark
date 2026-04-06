@@ -70,19 +70,37 @@ const GalleryImage = ({ src, index, onClick }: { src: string; index: number; onC
         transition={{ duration: 0.5 }}
       />
       <motion.div
-        className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center pb-4 z-[2]"
+        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4 z-[2]"
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <motion.span
-          className="text-sm font-medium bg-accent text-accent-foreground px-4 py-1.5 rounded-full"
-          initial={{ y: 10, opacity: 0 }}
-          whileHover={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          عرض المشروع
-        </motion.span>
+        <div className="w-full">
+          <motion.span
+            className="text-xs font-medium bg-accent text-accent-foreground px-3 py-1 rounded-full mb-2 inline-block"
+            initial={{ y: 10, opacity: 0 }}
+            whileHover={{ y: 0, opacity: 1 }}
+          >
+            {projects[index]?.category}
+          </motion.span>
+          <h3 className="text-primary-foreground font-bold text-sm mb-1">{projects[index]?.title}</h3>
+          {(projects[index]?.area || projects[index]?.location) && (
+            <div className="flex items-center gap-3 text-primary-foreground/70 text-xs">
+              {projects[index]?.area && (
+                <span className="flex items-center gap-1">
+                  <Maximize2 className="w-3 h-3" />
+                  {projects[index].area}
+                </span>
+              )}
+              {projects[index]?.location && (
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {projects[index].location}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </motion.div>
     </motion.div>
   );
