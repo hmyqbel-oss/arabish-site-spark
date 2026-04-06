@@ -71,6 +71,14 @@ const projects: Project[] = [
     area: "4750م²",
     location: "الرياض - خريص",
   },
+  {
+    image: "/gallery/project-sales-building.jpg",
+    title: "تصميم مبنى مبيعات",
+    category: "تجاري",
+    scope: "تصميم معماري وإنشائي",
+    area: "1927م²",
+    location: "الرياض - الجنادية",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
