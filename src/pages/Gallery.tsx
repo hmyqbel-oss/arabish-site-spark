@@ -87,6 +87,14 @@ const projects: Project[] = [
     area: "1680م²",
     location: "الرياض - ضاحية نمار",
   },
+  {
+    image: "/gallery/project-warehouse-masani.jpg",
+    title: "تصميم مبسط مواد بناء",
+    category: "صناعي",
+    scope: "تصميم معماري وإنشائي",
+    area: "1333م²",
+    location: "الرياض - حي المصانع",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
