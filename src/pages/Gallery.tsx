@@ -220,12 +220,6 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
           )}
         </div>
 
-        <button
-          onClick={onImageClick}
-          className="w-full mt-2 bg-accent hover:bg-accent/90 text-accent-foreground text-sm font-semibold py-2.5 rounded-lg transition-colors"
-        >
-          تفاصيل المشروع
-        </button>
       </div>
     </motion.div>
   );
