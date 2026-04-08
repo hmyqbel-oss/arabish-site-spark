@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, X, ChevronLeft, ChevronRight, MapPin, Briefcase, Maximize2, Eye } from "lucide-react";
+import { ArrowRight, X, MapPin, Briefcase, Maximize2, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -240,17 +240,11 @@ const Gallery = () => {
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
 
-  const goPrev = () =>
-    setSelectedIndex((prev) => (prev !== null ? (prev - 1 + images.length) % images.length : null));
-  const goNext = () =>
-    setSelectedIndex((prev) => (prev !== null ? (prev + 1) % images.length : null));
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (selectedIndex === null) return;
       if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") goNext();
-      if (e.key === "ArrowRight") goPrev();
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -346,21 +340,6 @@ const Gallery = () => {
               <X className="w-8 h-8" />
             </motion.button>
 
-            <motion.button
-              onClick={(e) => { e.stopPropagation(); goNext(); }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
-              whileHover={{ scale: 1.2, x: 4 }}
-            >
-              <ChevronRight className="w-10 h-10" />
-            </motion.button>
-
-            <motion.button
-              onClick={(e) => { e.stopPropagation(); goPrev(); }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
-              whileHover={{ scale: 1.2, x: -4 }}
-            >
-              <ChevronLeft className="w-10 h-10" />
-            </motion.button>
 
             <AnimatePresence mode="wait">
               <motion.img
@@ -376,14 +355,6 @@ const Gallery = () => {
               />
             </AnimatePresence>
 
-            <motion.div
-              className="absolute bottom-4 text-white/60 text-sm"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              {selectedIndex + 1} / {images.length}
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
