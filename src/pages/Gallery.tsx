@@ -159,6 +159,12 @@ const projects: Project[] = [
     area: "900م²",
     location: "الرياض - المهدية",
   },
+  {
+    image: "/gallery/project-wedding-hall.jpg",
+    title: "تصميم قاعة أفراح",
+    category: "تجاري",
+    scope: "واجهات",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
