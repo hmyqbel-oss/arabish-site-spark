@@ -135,6 +135,14 @@ const projects: Project[] = [
     area: "7911.12م²",
     location: "شمال الرياض - حي الملقا",
   },
+  {
+    image: "/gallery/project-residential-tuwaiq.gif",
+    title: "تصميم عمارة سكنية",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "990م²",
+    location: "الرياض - حي طويق",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
