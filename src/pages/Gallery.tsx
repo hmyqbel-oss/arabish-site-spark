@@ -143,6 +143,14 @@ const projects: Project[] = [
     area: "990م²",
     location: "الرياض - حي طويق",
   },
+  {
+    image: "/gallery/project-villa-tuwaiq.jpg",
+    title: "تصميم فيلا سكنية",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "400م²",
+    location: "الرياض - طويق",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
