@@ -173,6 +173,14 @@ const projects: Project[] = [
     area: "500م²",
     location: "الرياض - ديراب",
   },
+  {
+    image: "/gallery/project-attached-villas-tuwaiq.jpg",
+    title: "تصميم فلل سكنية متلاصقة",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "700م²",
+    location: "الرياض - طويق",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
