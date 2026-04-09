@@ -151,6 +151,14 @@ const projects: Project[] = [
     area: "400م²",
     location: "الرياض - طويق",
   },
+  {
+    image: "/gallery/project-commercial-mahdia.jpg",
+    title: "تصميم عمارة تجارية سكنية",
+    category: "تجاري - سكني",
+    scope: "تصميم معماري وإنشائي وكهرباء وميكانيك",
+    area: "900م²",
+    location: "الرياض - المهدية",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
