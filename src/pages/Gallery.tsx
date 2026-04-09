@@ -165,6 +165,14 @@ const projects: Project[] = [
     category: "تجاري",
     scope: "واجهات",
   },
+  {
+    image: "/gallery/project-duplex-dirab2.jpg",
+    title: "تصميم فلل سكنية دبلكس",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "500م²",
+    location: "الرياض - ديراب",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
