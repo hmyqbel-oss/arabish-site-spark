@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 
 interface Project {
   image: string;
+  thumb?: string;
   title: string;
   category: string;
   scope?: string;
