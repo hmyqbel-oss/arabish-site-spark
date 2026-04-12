@@ -118,7 +118,25 @@ const CompanyProfile = () => {
         ) : (
           /* Single Page View */
           <div className="container flex items-start justify-center py-4">
-            <div className="relative max-w-4xl w-full group">
+            <div
+              className="relative max-w-4xl w-full group"
+              onTouchStart={(e) => {
+                const touch = e.touches[0];
+                (e.currentTarget as any)._swipeX = touch.clientX;
+              }}
+              onTouchEnd={(e) => {
+                const startX = (e.currentTarget as any)._swipeX;
+                if (startX == null) return;
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                if (Math.abs(diff) > 50) {
+                  // RTL: swipe left = next, swipe right = prev
+                  if (diff > 0) goTo(currentPage + 1);
+                  else goTo(currentPage - 1);
+                }
+                (e.currentTarget as any)._swipeX = null;
+              }}
+            >
               {/* Navigation Arrows */}
               <button
                 onClick={() => goTo(currentPage + 1)}
@@ -139,7 +157,7 @@ const CompanyProfile = () => {
               <img
                 src={getPageUrl(currentPage)}
                 alt={`صفحة ${currentPage}`}
-                className="w-full h-auto rounded-xl shadow-2xl"
+                className="w-full h-auto rounded-xl shadow-2xl select-none"
                 draggable={false}
               />
 
