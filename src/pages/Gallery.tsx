@@ -106,6 +106,14 @@ const projects: Project[] = [
     location: "الرياض - ديراب",
   },
   {
+    image: "/gallery/project-commercial-mahdia2.jpg",
+    title: "تصميم عمارة تجارية سكنية",
+    category: "تجاري - سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "450م²",
+    location: "الرياض - المهدية",
+  },
+  {
     image: "/gallery/project-penthouse-villas.jpg",
     title: "تصميم فلل بنت هاوس متلاصقة",
     category: "سكني",
