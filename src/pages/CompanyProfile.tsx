@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize, Download, Grid3X3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Grid3X3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TOTAL_PAGES = 80;
