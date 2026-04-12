@@ -35,6 +35,7 @@ const projects: Project[] = [
   },
   {
     image: "/gallery/project-residential-tuwaiq.gif",
+    thumb: "/gallery/project-residential-tuwaiq-thumb.jpg",
     title: "تصميم عمارة سكنية",
     category: "سكني",
     scope: "تصميم معماري وإنشائي",
