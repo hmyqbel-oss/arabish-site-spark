@@ -78,7 +78,19 @@ const features: ServiceFeature[] = [
       "رفع ثلاثي الأبعاد (3D Scanning)",
     ],
   },
-  { title: "المخططات الميكانيكية" },
+  {
+    title: "المخططات الميكانيكية",
+    image: "/services/mechanical-plans.png",
+    details: [
+      "تصميم أنظمة التكييف (HVAC)",
+      "تصميم أنظمة مكافحة الحريق (Fire Fighting)",
+      "تصميم أنظمة الصرف والتغذية (Plumbing & Drainage)",
+      "حساب الأحمال الحرارية (Cooling Load Calculation)",
+      "إعداد المخططات التنفيذية (Shop Drawings)",
+      "نمذجة الأنظمة باستخدام BIM",
+      "إعداد جداول الكميات (BOQ)",
+    ],
+  },
 ];
 
 const FeatureAccordion = ({ feature }: { feature: ServiceFeature }) => {
