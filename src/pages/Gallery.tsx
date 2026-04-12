@@ -217,55 +217,54 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
+  const thumbSrc = project.thumb || project.image;
+
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.5, delay: (index % 3) * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/30 transition-all duration-500 shadow-sm hover:shadow-xl group"
+      className={`rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/30 transition-all duration-300 shadow-sm hover:shadow-xl group ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+      style={{ transitionDelay: `${(index % 3) * 80}ms` }}
     >
       {/* Image */}
       <div className="relative overflow-hidden cursor-pointer" onClick={onImageClick}>
-        <div
-          className={`absolute inset-0 bg-muted/80 backdrop-blur-xl transition-opacity duration-700 z-[1] ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-        >
-          <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
-        </div>
-        <motion.img
-          src={project.image}
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-muted/80 z-[1]">
+            <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
+          </div>
+        )}
+        <img
+          src={thumbSrc}
           alt={project.title}
-          className={`w-full h-56 md:h-64 object-cover transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`w-full h-56 md:h-64 object-cover transition-transform duration-500 group-hover:scale-105 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           loading="lazy"
+          decoding="async"
+          width={800}
+          height={600}
           onLoad={() => setIsLoaded(true)}
-          whileHover={{ scale: 1.06 }}
-          transition={{ duration: 0.6 }}
         />
         <div className="absolute top-3 right-3 z-[2]">
           <span className="text-xs font-semibold bg-accent text-accent-foreground px-3 py-1 rounded-full shadow-md">
             {project.category}
           </span>
         </div>
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-[1] flex items-center justify-center">
-          <motion.div
-            className="bg-accent/90 text-accent-foreground rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            whileHover={{ scale: 1.1 }}
-          >
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-[1] flex items-center justify-center">
+          <div className="bg-accent/90 text-accent-foreground rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Eye className="w-5 h-5" />
-          </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Details */}
       <div className="p-5 space-y-3 text-right">
         <h3 className="text-foreground font-bold text-base md:text-lg">{project.title}</h3>
-
         <div className="space-y-2">
           {project.scope && (
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
@@ -286,9 +285,8 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
             </div>
           )}
         </div>
-
       </div>
-    </motion.div>
+    </div>
   );
 };
 
