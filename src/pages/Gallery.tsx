@@ -368,20 +368,14 @@ const Gallery = () => {
           </motion.div>
 
           {/* Grid */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              {filteredProjects.map((project, i) => (
-                <ProjectCard key={project.title + i} project={project} index={i} onImageClick={() => openLightbox(i)} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <div
+            key={activeCategory}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filteredProjects.map((project, i) => (
+              <ProjectCard key={project.title + i} project={project} index={i} onImageClick={() => openLightbox(i)} />
+            ))}
+          </div>
         </div>
       </section>
 
