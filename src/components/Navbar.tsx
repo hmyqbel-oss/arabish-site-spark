@@ -78,6 +78,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="/#hero"
+            onClick={(e) => handleHashLink(e, "/#hero")}
             className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
@@ -91,6 +92,7 @@ const Navbar = () => {
           >
             <a
               href="/#services"
+              onClick={(e) => handleHashLink(e, "/#services")}
               className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
@@ -121,6 +123,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
+              onClick={(e) => handleHashLink(e, link.href)}
               className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
@@ -132,6 +135,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="/#contact"
+            onClick={(e) => handleHashLink(e, "/#contact")}
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -167,7 +171,7 @@ const Navbar = () => {
           >
             <a
               href="/#hero"
-              onClick={() => setOpen(false)}
+              onClick={(e) => handleHashLink(e, "/#hero")}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
               الرئيسية
@@ -206,7 +210,7 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => handleHashLink(e, link.href)}
                 className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
               >
                 {link.label}
@@ -222,7 +226,7 @@ const Navbar = () => {
           >
             <a
               href="/#contact"
-              onClick={() => setOpen(false)}
+              onClick={(e) => handleHashLink(e, "/#contact")}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
               <Phone className="w-5 h-5" />
