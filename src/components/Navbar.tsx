@@ -16,9 +16,9 @@ const serviceLinks = [
 
 const navLinks = [
   { label: "الرئيسية", href: "/#hero" },
-  { label: "بروفايل الشركة", href: "/profile" },
   { label: "مشاريعنا", href: "/#projects" },
   { label: "من نحن", href: "/#about" },
+  { label: "بروفايل الشركة", href: "/profile" },
   { label: "تواصل معنا", href: "/#contact" },
 ];
 
