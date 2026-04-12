@@ -59,6 +59,14 @@ const projects: Project[] = [
     location: "الرياض - ديراب",
   },
   {
+    image: "/gallery/project-villa-mahdia2.jpg",
+    title: "تصميم فيلا سكنية",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "450م²",
+    location: "الرياض - المهدية",
+  },
+  {
     image: "/gallery/project-wedding-hall.jpg",
     title: "تصميم قاعة أفراح",
     category: "تجاري",
