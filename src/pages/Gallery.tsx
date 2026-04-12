@@ -181,6 +181,14 @@ const projects: Project[] = [
     area: "700م²",
     location: "الرياض - طويق",
   },
+  {
+    image: "/gallery/project-villas-mahdia.jpg",
+    title: "تصميم فلل سكنية",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "410م²",
+    location: "الرياض - المهدية",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
