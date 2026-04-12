@@ -189,6 +189,14 @@ const projects: Project[] = [
     area: "410م²",
     location: "الرياض - المهدية",
   },
+  {
+    image: "/gallery/project-duplex-dirab3.jpg",
+    title: "تصميم فلل سكنية دبلكس",
+    category: "سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "400م²",
+    location: "الرياض - ديراب",
+  },
 ];
 
 const ProjectCard = ({ project, index, onImageClick }: { project: Project; index: number; onImageClick: () => void }) => {
