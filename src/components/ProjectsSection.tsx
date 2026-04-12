@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
 const projects = [
-  { image: "/gallery/project-commercial-sulaiman.jpg", title: "عمارة تجارية، شركة السليمان العقارية", category: "تجاري" },
+  { image: "/gallery/project-commercial-mahdia.jpg", title: "تصميم عمارة تجارية سكنية", category: "تجاري - سكني" },
   { image: "/gallery/project-villa-tuwaiq.jpg", title: "تصميم فيلا سكنية", category: "سكني" },
-  { image: "/gallery/project-compound-malqa.jpg", title: "مجمع فلل (كمباوند) تفاصيل لايف", category: "سكني" },
-  { image: "/gallery/project-duplex-dirab2.jpg", title: "تصميم فلل سكنية دبلكس", category: "سكني" },
+  { image: "/gallery/project-residential-tuwaiq-thumb.jpg", title: "تصميم عمارة سكنية", category: "سكني" },
+  { image: "/gallery/project-attached-villas-tuwaiq.jpg", title: "تصميم فلل سكنية متلاصقة", category: "سكني" },
 ];
 
 const ProjectsSection = () => {
