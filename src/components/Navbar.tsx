@@ -27,9 +27,26 @@ const Navbar = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
   // On non-home pages, always use dark text style (as if scrolled)
   const useDarkText = scrolled || !isHome;
+
+  const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    if (href.startsWith("/#")) {
+      const hash = href.substring(1); // e.g. "#hero"
+      if (isHome) {
+        const el = document.getElementById(hash.replace("#", ""));
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate("/" + hash);
+      }
+    } else {
+      navigate(href);
+    }
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (open) {
