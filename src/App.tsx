@@ -11,6 +11,7 @@ import SupervisionService from "./pages/services/SupervisionService.tsx";
 import SafetyService from "./pages/services/SafetyService.tsx";
 import TechnicalService from "./pages/services/TechnicalService.tsx";
 import TrafficService from "./pages/services/TrafficService.tsx";
+import CompanyProfile from "./pages/CompanyProfile.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 
 const queryClient = new QueryClient();
