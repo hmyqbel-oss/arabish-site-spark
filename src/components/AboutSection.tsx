@@ -39,11 +39,11 @@ const AboutSection = () => {
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-brand-light rounded-lg p-4 text-center">
-                <span className="text-2xl font-bold text-accent">15+</span>
-                <p className="text-xs text-muted-foreground mt-1">سنة خبرة</p>
+                <span className="text-2xl font-bold text-accent">8+</span>
+                <p className="text-xs text-muted-foreground mt-1">سنوات خبرة</p>
               </div>
               <div className="bg-brand-light rounded-lg p-4 text-center">
-                <span className="text-2xl font-bold text-accent">350+</span>
+                <span className="text-2xl font-bold text-accent">452+</span>
                 <p className="text-xs text-muted-foreground mt-1">مشروع منجز</p>
               </div>
             </div>
