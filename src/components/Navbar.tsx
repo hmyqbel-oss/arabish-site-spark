@@ -80,7 +80,7 @@ const Navbar = () => {
           <a
             href="/#hero"
             onClick={(e) => handleHashLink(e, "/#hero")}
-            className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+            className={cn("transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
@@ -94,7 +94,7 @@ const Navbar = () => {
             <a
               href="/#services"
               onClick={(e) => handleHashLink(e, "/#services")}
-              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("flex items-center gap-1 transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
@@ -125,7 +125,7 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={(e) => handleHashLink(e, link.href)}
-              className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
             </a>
