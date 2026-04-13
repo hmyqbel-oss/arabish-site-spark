@@ -12,11 +12,9 @@ interface FormData {
 
 const initialForm: FormData = { name: "", phone: "", email: "", message: "" };
 
-const isValidEmail = (email: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-const isValidSaudiPhone = (phone: string) =>
-  /^05\d{8}$/.test(phone);
+const isValidSaudiPhone = (phone: string) => /^05\d{8}$/.test(phone);
 
 const CTASection = () => {
   const [form, setForm] = useState<FormData>(() => {
@@ -48,9 +46,7 @@ const CTASection = () => {
       : "";
 
   const emailError =
-    touched.email && form.email.length > 0 && !isValidEmail(form.email)
-      ? "يرجى إدخال بريد إلكتروني صحيح"
-      : "";
+    touched.email && form.email.length > 0 && !isValidEmail(form.email) ? "يرجى إدخال بريد إلكتروني صحيح" : "";
 
   return (
     <section id="contact" className="py-16 md:py-24 bg-brand-light">
@@ -69,7 +65,9 @@ const CTASection = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-1">اتصل بنا</h3>
-                <p className="text-muted-foreground text-sm" dir="ltr">+966 500003063</p>
+                <p className="text-muted-foreground text-sm" dir="ltr">
+                  +966 500003063
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -87,7 +85,9 @@ const CTASection = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-1">العنوان</h3>
-                <p className="text-muted-foreground text-sm">المملكة العربية السعودية - الرياض - المهدية - حي الدهناء</p>
+                <p className="text-muted-foreground text-sm">
+                  المملكة العربية السعودية - الرياض - حي المهدية - شارع الدهناء
+                </p>
               </div>
             </div>
           </div>
