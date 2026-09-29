@@ -39,58 +39,10 @@ const features: ServiceFeature[] = [
       "تقييم سلامة المنشآت القائمة",
     ],
   },
-  {
-    title: "المخططات الكهربائية",
-    image: "/services/electrical-plans.png",
-    details: [
-      "تصميم مخططات القوى والإنارة",
-      "توزيع الأحمال الكهربائية وحساباتها (MDB, SMDB, DB)",
-      "تصميم لوحات التوزيع",
-      "أنظمة التيار الخفيف (CCTV – Data – Fire Alarm – Access Control)",
-      "أنظمة الطاقة الشمسية (Solar Systems)",
-      "إعداد جداول الكميات (BOQ)",
-      "مراجعة واعتماد المخططات طبقاً للكود السعودي",
-    ],
-  },
-  {
-    title: "التصميم الداخلي",
-    image: "/services/interior-design.png",
-    details: [
-      "تصميم الفراغات الداخلية (سكني / تجاري / إداري)",
-      "إعداد المخططات التنفيذية (Shop Drawings)",
-      "اختيار المواد والتشطيبات (Finishes & Materials)",
-      "تصميم الإضاءة الداخلية (Lighting Design)",
-      "إعداد نماذج ثلاثية الأبعاد (3D Visualization)",
-      "إعداد مخططات الأثاث والتوزيع (Furniture Layout)",
-      "الإشراف على التنفيذ وضبط الجودة",
-    ],
-  },
-  {
-    title: "الأعمال المساحية",
-    image: "/services/surveying.png",
-    details: [
-      "أعمال تجزئة ودمج الصكوك",
-      "أعمال الفرز العقاري",
-      "توقيع الأراضي وتحديد الإحداثيات باستخدام أجهزة GPS or Total Station",
-      "حساب كميات الحفر والردم",
-      "إسقاط العناصر الإنشائية وتوقيعها للتنفيذ",
-      "رفع مساحي للمباني القائمة وإعداد مخططات AS Built",
-      "رفع ثلاثي الأبعاد (3D Scanning)",
-    ],
-  },
-  {
-    title: "المخططات الميكانيكية",
-    image: "/services/mechanical-plans.png",
-    details: [
-      "تصميم أنظمة التكييف (HVAC)",
-      "تصميم أنظمة مكافحة الحريق (Fire Fighting)",
-      "تصميم أنظمة الصرف والتغذية (Plumbing & Drainage)",
-      "حساب الأحمال الحرارية (Cooling Load Calculation)",
-      "إعداد المخططات التنفيذية (Shop Drawings)",
-      "نمذجة الأنظمة باستخدام BIM",
-      "إعداد جداول الكميات (BOQ)",
-    ],
-  },
+  { title: "المخططات الكهربائية" },
+  { title: "التصميم الداخلي" },
+  { title: "الأعمال المساحية" },
+  { title: "المخططات الميكانيكية" },
 ];
 
 const FeatureAccordion = ({ feature }: { feature: ServiceFeature }) => {
@@ -182,12 +134,12 @@ const DesignService = () => (
               والكفاءة الوظيفية حيث تقود هذه العناصر الفريق الهندسي المصمم لإيجاد حلول
               التصميم النهائية المثلى وفق رؤية واحتياجات العملاء.
             </p>
-            <a
-              href="/#contact"
+            <Link
+              to="/service-request"
               className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors"
             >
-              اطلب استشارة مجانية
-            </a>
+              طلب الخدمة
+            </Link>
           </div>
         </div>
       </div>

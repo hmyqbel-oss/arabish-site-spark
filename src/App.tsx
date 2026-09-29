@@ -5,14 +5,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import ServiceRequest from "./pages/ServiceRequest.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import DesignService from "./pages/services/DesignService.tsx";
 import SupervisionService from "./pages/services/SupervisionService.tsx";
 import SafetyService from "./pages/services/SafetyService.tsx";
 import TechnicalService from "./pages/services/TechnicalService.tsx";
 import TrafficService from "./pages/services/TrafficService.tsx";
-import CompanyProfile from "./pages/CompanyProfile.tsx";
-import ScrollToTop from "./components/ScrollToTop.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,11 +21,10 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/profile" element={<CompanyProfile />} />
+          <Route path="/service-request" element={<ServiceRequest />} />
           <Route path="/services/design" element={<DesignService />} />
           <Route path="/services/supervision" element={<SupervisionService />} />
           <Route path="/services/safety" element={<SafetyService />} />

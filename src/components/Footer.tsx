@@ -41,7 +41,7 @@ const Footer = () => {
           <div>
             <h3 className="font-bold text-base mb-4">الخدمات</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li>التصاميم والمخططات الهندسية</li>
+              <li>التصميم المعماري</li>
               <li>الإشراف وإدارة المشاريع</li>
               <li>السلامة الهندسية</li>
               <li>السلامة المرورية</li>

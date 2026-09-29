@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
@@ -18,7 +18,6 @@ const navLinks = [
   { label: "الرئيسية", href: "/#hero" },
   { label: "مشاريعنا", href: "/#projects" },
   { label: "من نحن", href: "/#about" },
-  { label: "بروفايل الشركة", href: "/profile" },
   { label: "تواصل معنا", href: "/#contact" },
 ];
 
@@ -28,26 +27,9 @@ const Navbar = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
   const location = useLocation();
-  const navigate = useNavigate();
   const isHome = location.pathname === "/";
   // On non-home pages, always use dark text style (as if scrolled)
   const useDarkText = scrolled || !isHome;
-
-  const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    if (href.startsWith("/#")) {
-      const hash = href.substring(1); // e.g. "#hero"
-      if (isHome) {
-        const el = document.getElementById(hash.replace("#", ""));
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        navigate("/" + hash);
-      }
-    } else {
-      navigate(href);
-    }
-    setOpen(false);
-  };
 
   useEffect(() => {
     if (open) {
@@ -79,8 +61,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="/#hero"
-            onClick={(e) => handleHashLink(e, "/#hero")}
-            className={cn("transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+            className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
           </a>
@@ -93,8 +74,7 @@ const Navbar = () => {
           >
             <a
               href="/#services"
-              onClick={(e) => handleHashLink(e, "/#services")}
-              className={cn("flex items-center gap-1 transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
@@ -124,8 +104,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              onClick={(e) => handleHashLink(e, link.href)}
-              className={cn("transition-colors text-base font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
             </a>
@@ -136,7 +115,6 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="/#contact"
-            onClick={(e) => handleHashLink(e, "/#contact")}
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -172,7 +150,7 @@ const Navbar = () => {
           >
             <a
               href="/#hero"
-              onClick={(e) => handleHashLink(e, "/#hero")}
+              onClick={() => setOpen(false)}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
               الرئيسية
@@ -211,7 +189,7 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleHashLink(e, link.href)}
+                onClick={() => setOpen(false)}
                 className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
               >
                 {link.label}
@@ -227,7 +205,7 @@ const Navbar = () => {
           >
             <a
               href="/#contact"
-              onClick={(e) => handleHashLink(e, "/#contact")}
+              onClick={() => setOpen(false)}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
               <Phone className="w-5 h-5" />

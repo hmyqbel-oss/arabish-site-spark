@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, X, MapPin, Briefcase, Maximize2, Eye } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight, MapPin, Briefcase, Maximize2, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 
 interface Project {
   image: string;
-  thumb?: string;
   title: string;
   category: string;
   scope?: string;
@@ -16,79 +15,6 @@ interface Project {
 }
 
 const projects: Project[] = [
-  // المشاريع المضافة حديثاً
-  {
-    image: "/gallery/project-commercial-mahdia.jpg",
-    title: "تصميم عمارة تجارية سكنية",
-    category: "تجاري - سكني",
-    scope: "تصميم معماري وإنشائي وكهرباء وميكانيك",
-    area: "900م²",
-    location: "الرياض - المهدية",
-  },
-  {
-    image: "/gallery/project-villa-tuwaiq.jpg",
-    title: "تصميم فيلا سكنية",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "400م²",
-    location: "الرياض - طويق",
-  },
-  {
-    image: "/gallery/project-residential-tuwaiq.gif",
-    thumb: "/gallery/project-residential-tuwaiq-thumb.jpg",
-    title: "تصميم عمارة سكنية",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "990م²",
-    location: "الرياض - حي طويق",
-  },
-  {
-    image: "/gallery/project-attached-villas-tuwaiq.jpg",
-    title: "تصميم فلل سكنية متلاصقة",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "700م²",
-    location: "الرياض - طويق",
-  },
-  {
-    image: "/gallery/project-duplex-dirab2.jpg",
-    title: "تصميم فلل سكنية دبلكس",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "500م²",
-    location: "الرياض - ديراب",
-  },
-  {
-    image: "/gallery/project-villa-mahdia2.jpg",
-    title: "تصميم فيلا سكنية",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "450م²",
-    location: "الرياض - المهدية",
-  },
-  {
-    image: "/gallery/project-wedding-hall.jpg",
-    title: "تصميم قاعة أفراح",
-    category: "تجاري",
-    scope: "واجهات",
-  },
-  {
-    image: "/gallery/project-duplex-dirab3.jpg",
-    title: "تصميم فلل سكنية دبلكس",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "400م²",
-    location: "الرياض - ديراب",
-  },
-  {
-    image: "/gallery/project-villas-mahdia.jpg",
-    title: "تصميم فلل سكنية",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "410م²",
-    location: "الرياض - المهدية",
-  },
-  // المشاريع السابقة
   {
     image: "/gallery/project-villa-modern.jpg",
     title: "تصميم فيلا خاصة بطراز مودرن",
@@ -112,14 +38,6 @@ const projects: Project[] = [
     scope: "تصميم معماري وإنشائي",
     area: "288م²",
     location: "الرياض - ديراب",
-  },
-  {
-    image: "/gallery/project-commercial-mahdia2.jpg",
-    title: "تصميم عمارة تجارية سكنية",
-    category: "تجاري - سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "450م²",
-    location: "الرياض - المهدية",
   },
   {
     image: "/gallery/project-penthouse-villas.jpg",
@@ -154,11 +72,35 @@ const projects: Project[] = [
     location: "الرياض - خريص",
   },
   {
+    image: "/gallery/project-sales-building.jpg",
+    title: "تصميم مبنى مبيعات",
+    category: "تجاري",
+    scope: "تصميم معماري وإنشائي",
+    area: "1927م²",
+    location: "الرياض - الجنادية",
+  },
+  {
     image: "/gallery/project-mixed-namar.jpg",
     title: "تصميم عمارة تجارية سكنية",
     category: "تجاري - سكني",
     scope: "تصميم معماري وإنشائي",
     area: "1680م²",
+    location: "الرياض - ضاحية نمار",
+  },
+  {
+    image: "/gallery/project-warehouse-masani.jpg",
+    title: "تصميم مبسط مواد بناء",
+    category: "صناعي",
+    scope: "تصميم معماري وإنشائي",
+    area: "1333م²",
+    location: "الرياض - حي المصانع",
+  },
+  {
+    image: "/gallery/project-mixed-namar2.jpg",
+    title: "تصميم عمارة تجارية سكنية",
+    category: "تجاري - سكني",
+    scope: "تصميم معماري وإنشائي",
+    area: "1029م²",
     location: "الرياض - ضاحية نمار",
   },
   {
@@ -178,31 +120,6 @@ const projects: Project[] = [
     location: "الرياض - حي الحزم",
   },
   {
-    image: "/gallery/project-compound-malqa.jpg",
-    title: "مجمع فلل (كمباوند) تفاصيل لايف",
-    category: "سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "7911.12م²",
-    location: "شمال الرياض - حي الملقا",
-  },
-  // المشاريع الأخيرة
-  {
-    image: "/gallery/project-sales-building.jpg",
-    title: "تصميم مبنى مبيعات",
-    category: "تجاري",
-    scope: "تصميم معماري وإنشائي",
-    area: "1927م²",
-    location: "الرياض - الجنادية",
-  },
-  {
-    image: "/gallery/project-mixed-namar2.jpg",
-    title: "تصميم عمارة تجارية سكنية",
-    category: "تجاري - سكني",
-    scope: "تصميم معماري وإنشائي",
-    area: "1029م²",
-    location: "الرياض - ضاحية نمار",
-  },
-  {
     image: "/gallery/project-grid-villa4.jpg",
     title: "جريد فيلا 4",
     category: "سكني",
@@ -211,12 +128,12 @@ const projects: Project[] = [
     location: "الرياض - النرجس",
   },
   {
-    image: "/gallery/project-warehouse-masani.jpg",
-    title: "تصميم مبسط مواد بناء",
-    category: "صناعي",
+    image: "/gallery/project-compound-malqa.jpg",
+    title: "مجمع فلل (كمباوند) تفاصيل لايف",
+    category: "سكني",
     scope: "تصميم معماري وإنشائي",
-    area: "1333م²",
-    location: "الرياض - حي المصانع",
+    area: "7911.12م²",
+    location: "شمال الرياض - حي الملقا",
   },
 ];
 
@@ -233,54 +150,55 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  const thumbSrc = project.thumb || project.image;
-
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={`rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/30 transition-all duration-300 shadow-sm hover:shadow-xl group ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-      }`}
-      style={{ transitionDelay: `${(index % 3) * 80}ms` }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/30 transition-all duration-500 shadow-sm hover:shadow-xl group"
     >
       {/* Image */}
       <div className="relative overflow-hidden cursor-pointer" onClick={onImageClick}>
-        {!isLoaded && (
-          <div className="absolute inset-0 bg-muted/80 z-[1]">
-            <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
-          </div>
-        )}
-        <img
-          src={thumbSrc}
+        <div
+          className={`absolute inset-0 bg-muted/80 backdrop-blur-xl transition-opacity duration-700 z-[1] ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        >
+          <div className="w-full h-full animate-pulse bg-gradient-to-br from-muted to-muted-foreground/10" />
+        </div>
+        <motion.img
+          src={project.image}
           alt={project.title}
-          className={`w-full h-56 md:h-64 object-cover transition-transform duration-500 group-hover:scale-105 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`w-full h-56 md:h-64 object-cover transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           loading="lazy"
-          decoding="async"
-          width={800}
-          height={600}
           onLoad={() => setIsLoaded(true)}
+          whileHover={{ scale: 1.06 }}
+          transition={{ duration: 0.6 }}
         />
         <div className="absolute top-3 right-3 z-[2]">
           <span className="text-xs font-semibold bg-accent text-accent-foreground px-3 py-1 rounded-full shadow-md">
             {project.category}
           </span>
         </div>
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-[1] flex items-center justify-center">
-          <div className="bg-accent/90 text-accent-foreground rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-[1] flex items-center justify-center">
+          <motion.div
+            className="bg-accent/90 text-accent-foreground rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            whileHover={{ scale: 1.1 }}
+          >
             <Eye className="w-5 h-5" />
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Details */}
       <div className="p-5 space-y-3 text-right">
         <h3 className="text-foreground font-bold text-base md:text-lg">{project.title}</h3>
+
         <div className="space-y-2">
           {project.scope && (
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
@@ -301,8 +219,15 @@ const ProjectCard = ({ project, index, onImageClick }: { project: Project; index
             </div>
           )}
         </div>
+
+        <button
+          onClick={onImageClick}
+          className="w-full mt-2 bg-accent hover:bg-accent/90 text-accent-foreground text-sm font-semibold py-2.5 rounded-lg transition-colors"
+        >
+          تفاصيل المشروع
+        </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -321,11 +246,17 @@ const Gallery = () => {
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
 
+  const goPrev = () =>
+    setSelectedIndex((prev) => (prev !== null ? (prev - 1 + images.length) % images.length : null));
+  const goNext = () =>
+    setSelectedIndex((prev) => (prev !== null ? (prev + 1) % images.length : null));
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (selectedIndex === null) return;
       if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") goNext();
+      if (e.key === "ArrowRight") goPrev();
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -384,14 +315,20 @@ const Gallery = () => {
           </motion.div>
 
           {/* Grid */}
-          <div
-            key={activeCategory}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredProjects.map((project, i) => (
-              <ProjectCard key={project.title + i} project={project} index={i} onImageClick={() => openLightbox(i)} />
-            ))}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              {filteredProjects.map((project, i) => (
+                <ProjectCard key={project.title + i} project={project} index={i} onImageClick={() => openLightbox(i)} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
@@ -415,6 +352,21 @@ const Gallery = () => {
               <X className="w-8 h-8" />
             </motion.button>
 
+            <motion.button
+              onClick={(e) => { e.stopPropagation(); goNext(); }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
+              whileHover={{ scale: 1.2, x: 4 }}
+            >
+              <ChevronRight className="w-10 h-10" />
+            </motion.button>
+
+            <motion.button
+              onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10"
+              whileHover={{ scale: 1.2, x: -4 }}
+            >
+              <ChevronLeft className="w-10 h-10" />
+            </motion.button>
 
             <AnimatePresence mode="wait">
               <motion.img
@@ -430,6 +382,14 @@ const Gallery = () => {
               />
             </AnimatePresence>
 
+            <motion.div
+              className="absolute bottom-4 text-white/60 text-sm"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {selectedIndex + 1} / {images.length}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom";
-
 const projects = [
-  { image: "/gallery/project-commercial-mahdia.jpg", title: "تصميم عمارة تجارية سكنية", category: "تجاري - سكني" },
-  { image: "/gallery/project-villa-tuwaiq.jpg", title: "تصميم فيلا سكنية", category: "سكني" },
-  { image: "/gallery/project-residential-tuwaiq-thumb.jpg", title: "تصميم عمارة سكنية", category: "سكني" },
-  { image: "/gallery/project-attached-villas-tuwaiq.jpg", title: "تصميم فلل سكنية متلاصقة", category: "سكني" },
+  { image: "/gallery/project-4.jpg", title: "فيلا سكنية فاخرة", category: "سكني" },
+  { image: "/gallery/project-7.jpg", title: "مبنى تجاري", category: "تجاري" },
+  { image: "/gallery/project-2.jpg", title: "تصميم معماري حديث", category: "تصميم" },
+  { image: "/gallery/project-8.jpg", title: "مجمع تجاري", category: "تجاري" },
 ];
 
 const ProjectsSection = () => {
@@ -18,7 +16,7 @@ const ProjectsSection = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {projects.map((project) => (
-            <Link to="/gallery" key={project.title} className="group relative rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent/40 transition-all duration-500">
+            <div key={project.title} className="group relative rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent/40 transition-all duration-500">
               <img
                 src={project.image}
                 alt={project.title}
@@ -35,17 +33,17 @@ const ProjectsSection = () => {
                   <h3 className="text-primary-foreground font-bold text-base">{project.title}</h3>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 
         <div className="text-center mt-10">
-          <Link
-            to="/gallery"
+          <a
+            href="/gallery"
             className="inline-block border border-primary-foreground/30 text-primary-foreground/80 px-8 py-3 rounded-md hover:bg-primary-foreground/10 transition-colors text-sm font-medium"
           >
             معرض أعمالنا
-          </Link>
+          </a>
         </div>
       </div>
     </section>
