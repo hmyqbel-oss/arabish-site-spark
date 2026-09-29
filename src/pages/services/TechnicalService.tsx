@@ -31,9 +31,9 @@ const TechnicalService = () => (
             <p className="text-muted-foreground leading-relaxed mb-8">
               نقدم حلولاً تقنية متخصصة وتوجيهات لضمان تنفيذ المشاريع بكفاءة وفق المعايير الهندسية المطلوبة، مع فريق من الخبراء المتخصصين في مختلف المجالات الهندسية.
             </p>
-            <a href="/#contact" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
-              اطلب استشارة مجانية
-            </a>
+            <Link to="/service-request" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
+              طلب الخدمة
+            </Link>
           </div>
           <div className="space-y-4">
             {features.map((f, i) => (
