@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import ServiceRequest from "./pages/ServiceRequest.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import DesignService from "./pages/services/DesignService.tsx";
 import SupervisionService from "./pages/services/SupervisionService.tsx";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/service-request" element={<ServiceRequest />} />
           <Route path="/services/design" element={<DesignService />} />
           <Route path="/services/supervision" element={<SupervisionService />} />
           <Route path="/services/safety" element={<SafetyService />} />

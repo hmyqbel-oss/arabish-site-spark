@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin } from "lucide-react";
+import WhatsAppRequestForm from "@/components/WhatsAppRequestForm";
 
 const CTASection = () => {
   return (
@@ -47,34 +48,7 @@ const CTASection = () => {
           </div>
 
           {/* Contact Form */}
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="text"
-              placeholder="الاسم الكامل"
-              className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
-            />
-            <input
-              type="tel"
-              placeholder="رقم الجوال"
-              className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
-            />
-            <input
-              type="email"
-              placeholder="البريد الإلكتروني"
-              className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
-            />
-            <textarea
-              placeholder="رسالتك"
-              rows={4}
-              className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
-            />
-            <button
-              type="submit"
-              className="w-full bg-accent text-accent-foreground py-3 rounded-md font-semibold hover:bg-accent/90 transition-colors"
-            >
-              إرسال الطلب
-            </button>
-          </form>
+          <WhatsAppRequestForm className="bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm" />
         </div>
       </div>
     </section>
