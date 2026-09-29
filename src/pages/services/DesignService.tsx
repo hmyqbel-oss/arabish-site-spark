@@ -134,12 +134,12 @@ const DesignService = () => (
               والكفاءة الوظيفية حيث تقود هذه العناصر الفريق الهندسي المصمم لإيجاد حلول
               التصميم النهائية المثلى وفق رؤية واحتياجات العملاء.
             </p>
-            <a
-              href="/#contact"
+            <Link
+              to="/service-request"
               className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors"
             >
-              اطلب استشارة مجانية
-            </a>
+              طلب الخدمة
+            </Link>
           </div>
         </div>
       </div>
