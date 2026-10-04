@@ -1,5 +1,5 @@
 import { Phone, Mail, MapPin } from "lucide-react";
-import WhatsAppRequestForm from "@/components/WhatsAppRequestForm";
+import ServiceRequestForm from "@/components/ServiceRequestForm";
 
 const CTASection = () => {
   return (
@@ -48,7 +48,7 @@ const CTASection = () => {
           </div>
 
           {/* Contact Form */}
-          <WhatsAppRequestForm className="bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm" />
+          <ServiceRequestForm className="bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm" />
         </div>
       </div>
     </section>

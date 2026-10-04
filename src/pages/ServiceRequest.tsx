@@ -1,7 +1,7 @@
 import { FileText, Phone, Mail } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppRequestForm from "@/components/WhatsAppRequestForm";
+import ServiceRequestForm from "@/components/ServiceRequestForm";
 
 const ServiceRequest = () => {
   return (
@@ -52,7 +52,7 @@ const ServiceRequest = () => {
 
             <div className="bg-card p-6 md:p-8 rounded-2xl border border-border shadow-sm">
               <h2 className="text-lg font-bold text-foreground mb-6">بيانات الطلب</h2>
-              <WhatsAppRequestForm />
+              <ServiceRequestForm />
             </div>
           </div>
         </div>

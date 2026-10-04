@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const WHATSAPP_NUMBER = "966500003063";
+const BRIDGE_URL = "/odoo-bridge.php";
 const STORAGE_KEY = "osaec-service-request";
 
 interface FormData {
@@ -10,9 +11,10 @@ interface FormData {
   mobile: string;
   email: string;
   message: string;
+  website: string; // حقل فخ ضد الروبوتات — يجب أن يبقى فارغاً
 }
 
-const emptyForm: FormData = { name: "", mobile: "", email: "", message: "" };
+const emptyForm: FormData = { name: "", mobile: "", email: "", message: "", website: "" };
 
 const validateName = (v: string) =>
   v.trim().length === 0
@@ -50,18 +52,23 @@ const validators: Record<keyof FormData, (v: string) => string> = {
   mobile: validateMobile,
   email: validateEmail,
   message: validateMessage,
+  website: () => "",
 };
 
-interface WhatsAppRequestFormProps {
+interface ServiceRequestFormProps {
   serviceName?: string;
   className?: string;
 }
 
-const WhatsAppRequestForm = ({ serviceName, className }: WhatsAppRequestFormProps) => {
+const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps) => {
   const [form, setForm] = useState<FormData>(() => {
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) return { ...emptyForm, ...JSON.parse(saved) };
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // نموذج قديم محفوظ قبل إضافة حقل الفخ
+        return { ...emptyForm, ...parsed, website: "" };
+      }
     } catch {
       // ignore corrupted storage
     }
@@ -69,9 +76,9 @@ const WhatsAppRequestForm = ({ serviceName, className }: WhatsAppRequestFormProp
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "whatsapp">("idle");
 
-  // persist to session storage (debounced by React batching; lightweight data)
+  // persist to session storage (lightweight data)
   useEffect(() => {
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(form));
@@ -92,8 +99,33 @@ const WhatsAppRequestForm = ({ serviceName, className }: WhatsAppRequestFormProp
     setErrors((e) => ({ ...e, [field]: validators[field](form[field]) }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const openWhatsApp = (data: FormData) => {
+    const lines = [
+      "طلب خدمة جديد",
+      serviceName ? `الخدمة: ${serviceName}` : null,
+      `الاسم: ${data.name.trim()}`,
+      `الجوال: ${data.mobile.replace(/\D/g, "")}`,
+      `البريد: ${data.email.trim()}`,
+      `الرسالة: ${data.message.trim()}`,
+    ].filter(Boolean);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const resetAfterSend = () => {
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    setForm(emptyForm);
+    setTouched({});
+    setErrors({});
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
     const newErrors = {
       name: validateName(form.name),
       mobile: validateMobile(form.mobile),
@@ -104,27 +136,42 @@ const WhatsAppRequestForm = ({ serviceName, className }: WhatsAppRequestFormProp
     setTouched({ name: true, mobile: true, email: true, message: true });
     if (Object.values(newErrors).some(Boolean)) return;
 
-    const lines = [
-      "طلب خدمة جديد",
-      serviceName ? `الخدمة: ${serviceName}` : null,
-      `الاسم: ${form.name.trim()}`,
-      `الجوال: ${form.mobile.replace(/\D/g, "")}`,
-      `البريد: ${form.email.trim()}`,
-      `الرسالة: ${form.message.trim()}`,
-    ].filter(Boolean);
-    const text = lines.join("\n");
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    setSent(true);
-    // clear session data after successful submission
+    setStatus("sending");
+    let delivered = false;
     try {
-      sessionStorage.removeItem(STORAGE_KEY);
+      const res = await fetch(BRIDGE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          mobile: form.mobile.replace(/\D/g, ""),
+          email: form.email.trim(),
+          message: form.message.trim(),
+          service_name: serviceName ?? "",
+          page: window.location.pathname,
+          website: form.website,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.ok) {
+        delivered = true;
+        setStatus("sent");
+      } else if (res.ok && data && !data.ok && data.errors) {
+        // أخطاء تحقق من جهة الخادم
+        setErrors((e) => ({ ...e, ...(data.errors as Record<string, string>) }));
+        setStatus("idle");
+        return;
+      }
     } catch {
-      // ignore
+      // الشبكة أو الوسيط غير متوفر — الخطوة الاحتياطية أدناه
     }
-    setForm(emptyForm);
-    setTouched({});
-    setErrors({});
+
+    if (!delivered) {
+      // الوسيط غير جاهز أو تعذر الوصول لأودو → واتساب تلقائياً حتى لا يضيع الطلب
+      openWhatsApp(form);
+      setStatus("whatsapp");
+    }
+    resetAfterSend();
   };
 
   const inputClass = (field: keyof FormData) =>
@@ -176,24 +223,51 @@ const WhatsAppRequestForm = ({ serviceName, className }: WhatsAppRequestFormProp
           <p className="text-destructive text-xs mt-1">{errors.message}</p>
         )}
       </div>
+      {/* حقل فخ ضد الروبوتات — مخفي عن الزوار */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={form.website}
+        onChange={(e) => setField("website", e.target.value)}
+        className="hidden"
+        aria-hidden="true"
+      />
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded-md font-semibold hover:bg-accent/90 transition-colors"
+        disabled={status === "sending"}
+        className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded-md font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60"
       >
-        <Send className="w-4 h-4" />
-        إرسال الطلب عبر واتساب
+        {status === "sending" ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            جارٍ الإرسال...
+          </>
+        ) : (
+          <>
+            <Send className="w-4 h-4" />
+            إرسال الطلب
+          </>
+        )}
       </button>
-      {sent && (
+      {status === "sent" && (
+        <p className="flex items-center justify-center gap-2 text-sm text-foreground font-medium">
+          <CheckCircle2 className="w-4 h-4 text-accent" />
+          تم إرسال طلبك بنجاح — سيتواصل معك فريقنا قريباً
+        </p>
+      )}
+      {status === "whatsapp" && (
         <p className="flex items-center justify-center gap-2 text-sm text-foreground font-medium">
           <CheckCircle2 className="w-4 h-4 text-accent" />
           تم فتح واتساب — اضغط "إرسال" داخل التطبيق لتوصيل طلبك
         </p>
       )}
       <p className="text-center text-xs text-muted-foreground">
-        عند الإرسال سيفتح واتساب برسالة جاهزة ببياناتك موجهة لفريقنا
+        يصل طلبك مباشرة إلى نظام إدارة العملاء لدينا
       </p>
     </form>
   );
 };
 
-export default WhatsAppRequestForm;
+export default ServiceRequestForm;
