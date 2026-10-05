@@ -156,11 +156,6 @@ try {
         send_json(['ok' => false, 'code' => 'method', 'message' => 'طريقة الطلب غير مدعومة'], 405);
     }
 
-    // حقل الفخ ضد الروبوتات: يُملأ من الروبوتات فقط
-    if (!empty($_POST['website'] ?? '')) {
-        send_json(['ok' => true]);
-    }
-
     if (rate_limited()) {
         send_json(['ok' => false, 'code' => 'rate_limited',
             'message' => 'تم إرسال عدة طلبات من جهازك — حاول مرة أخرى بعد قليل']);
@@ -172,6 +167,11 @@ try {
     }
     $in = json_decode((string) $raw, true);
     if (!is_array($in)) $in = $_POST;
+
+    // حقل الفخ ضد الروبوتات: يُملأ من الروبوتات فقط — نتظاهر بالنجاح ونتجاهل الطلب
+    if (!empty($in['website'] ?? '')) {
+        send_json(['ok' => true]);
+    }
 
     [$errors, $name, $mobile, $email, $message] = validate(is_array($in) ? $in : []);
     if ($errors) {
