@@ -226,18 +226,19 @@ try {
 
     // 4) إنشاء الفرصة في CRM
     $title = 'طلب خدمة من الموقع' . ($serviceName !== '' ? ' – ' . $serviceName : '');
-    $description = "الاسم: {$name}\nالجوال: {$mobile}\nالبريد: {$email}\n"
+    $description = "الاسم: {$name}\nالجوال: {$mobile}\n"
+        . ($email !== '' ? "البريد: {$email}\n" : '')
         . ($serviceName !== '' ? "الخدمة المطلوبة: {$serviceName}\n" : '')
         . ($page !== '' ? "الصفحة: {$page}\n" : '')
-        . "الرسالة:\n{$message}";
+        . "وصف الطلب:\n{$message}";
 
     $vals = [
         'name'         => $title,
         'contact_name' => $name,
         'phone'        => $mobile,
-        'email_from'   => $email,
         'description'  => $description,
     ];
+    if ($email !== '') $vals['email_from'] = $email;
     if ($sourceId) $vals['source_id'] = $sourceId;
     if ($teamId)   $vals['team_id']   = $teamId;
 
