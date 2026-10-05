@@ -136,14 +136,15 @@ function validate(array $in): array {
         $errors['mobile'] = 'رقم الجوال يجب أن يكون 10 أرقام ويبدأ بـ 05';
     }
 
+    // البريد اختياري — يُتحقق منه فقط إن أُرسل
     $email = trim((string) ($in['email'] ?? ''));
-    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'صيغة البريد الإلكتروني غير صحيحة';
     }
 
     $message = trim((string) ($in['message'] ?? ''));
-    if ($message === '')        $errors['message'] = 'الرسالة مطلوبة';
-    elseif (mb_strlen($message) > 1000) $errors['message'] = 'الرسالة طويلة جداً';
+    if ($message === '')        $errors['message'] = 'وصف الطلب مطلوب';
+    elseif (mb_strlen($message) > 1000) $errors['message'] = 'وصف الطلب طويل جداً';
 
     return [$errors, $name, $mobile, $email, $message];
 }
