@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Send, CheckCircle2, Loader2 } from "lucide-react";
+import { Send, CheckCircle2, Loader2, User, Phone, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const WHATSAPP_NUMBER = "966500003063";
@@ -9,12 +9,11 @@ const STORAGE_KEY = "osaec-service-request";
 interface FormData {
   name: string;
   mobile: string;
-  email: string;
   message: string;
   website: string; // حقل فخ ضد الروبوتات — يجب أن يبقى فارغاً
 }
 
-const emptyForm: FormData = { name: "", mobile: "", email: "", message: "", website: "" };
+const emptyForm: FormData = { name: "", mobile: "", message: "", website: "" };
 
 const validateName = (v: string) =>
   v.trim().length === 0
@@ -32,25 +31,16 @@ const validateMobile = (v: string) => {
   return "";
 };
 
-const validateEmail = (v: string) => {
-  const t = v.trim();
-  if (t.length === 0) return "البريد الإلكتروني مطلوب";
-  if (t.length > 255) return "البريد طويل جداً";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t)) return "صيغة البريد الإلكتروني غير صحيحة";
-  return "";
-};
-
 const validateMessage = (v: string) =>
   v.trim().length === 0
-    ? "الرسالة مطلوبة"
+    ? "وصف الطلب مطلوب"
     : v.trim().length > 1000
-    ? "الرسالة طويلة جداً (1000 حرف كحد أقصى)"
+    ? "وصف الطلب طويل جداً (1000 حرف كحد أقصى)"
     : "";
 
 const validators: Record<keyof FormData, (v: string) => string> = {
   name: validateName,
   mobile: validateMobile,
-  email: validateEmail,
   message: validateMessage,
   website: () => "",
 };
@@ -66,8 +56,8 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        // نموذج قديم محفوظ قبل إضافة حقل الفخ
-        return { ...emptyForm, ...parsed, website: "" };
+        // تجاهل أي بيانات قديمة محفوظة قبل تعديل الحقول
+        return { ...emptyForm, name: parsed.name ?? "", mobile: parsed.mobile ?? "", message: parsed.message ?? "" };
       }
     } catch {
       // ignore corrupted storage
@@ -105,8 +95,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
       serviceName ? `الخدمة: ${serviceName}` : null,
       `الاسم: ${data.name.trim()}`,
       `الجوال: ${data.mobile.replace(/\D/g, "")}`,
-      `البريد: ${data.email.trim()}`,
-      `الرسالة: ${data.message.trim()}`,
+      `وصف الطلب: ${data.message.trim()}`,
     ].filter(Boolean);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank", "noopener,noreferrer");
@@ -129,11 +118,10 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
     const newErrors = {
       name: validateName(form.name),
       mobile: validateMobile(form.mobile),
-      email: validateEmail(form.email),
       message: validateMessage(form.message),
     };
     setErrors(newErrors);
-    setTouched({ name: true, mobile: true, email: true, message: true });
+    setTouched({ name: true, mobile: true, message: true });
     if (Object.values(newErrors).some(Boolean)) return;
 
     setStatus("sending");
@@ -145,7 +133,6 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
         body: JSON.stringify({
           name: form.name.trim(),
           mobile: form.mobile.replace(/\D/g, ""),
-          email: form.email.trim(),
           message: form.message.trim(),
           service_name: serviceName ?? "",
           page: window.location.pathname,
@@ -176,53 +163,75 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
 
   const inputClass = (field: keyof FormData) =>
     cn(
-      "w-full bg-background border rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 transition-colors",
+      "w-full bg-background border rounded-xl ps-11 pe-4 py-3.5 text-sm shadow-sm transition-all duration-200",
+      "focus:outline-none focus:ring-2 focus:border-accent/60 hover:border-accent/40",
       touched[field] && errors[field]
         ? "border-destructive focus:ring-destructive/40"
-        : "border-border focus:ring-accent/50"
+        : "border-border focus:ring-accent/40"
     );
 
-  const fields: { key: keyof FormData; type: string; placeholder: string; dir?: string }[] = [
-    { key: "name", type: "text", placeholder: "الاسم الكامل" },
-    { key: "mobile", type: "tel", placeholder: "رقم الجوال (05xxxxxxxx)", dir: "ltr" },
-    { key: "email", type: "email", placeholder: "البريد الإلكتروني", dir: "ltr" },
-  ];
+  const iconClass = "absolute start-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 w-[18px] h-[18px] text-muted-foreground pointer-events-none";
 
   return (
-    <form className={cn("space-y-4", className)} onSubmit={handleSubmit} noValidate>
-      {fields.map(({ key, type, placeholder, dir }) => (
-        <div key={key}>
-          <input
-            type={type}
-            dir={dir}
-            placeholder={placeholder}
-            value={form[key]}
-            onChange={(e) => setField(key, e.target.value)}
-            onBlur={() => blurField(key)}
-            maxLength={key === "mobile" ? 13 : 255}
-            className={inputClass(key)}
-            aria-invalid={Boolean(touched[key] && errors[key])}
-          />
-          {touched[key] && errors[key] && (
-            <p className="text-destructive text-xs mt-1">{errors[key]}</p>
-          )}
-        </div>
-      ))}
+    <form className={cn("space-y-5", className)} onSubmit={handleSubmit} noValidate>
       <div>
-        <textarea
-          placeholder="رسالتك"
-          rows={4}
-          value={form.message}
-          onChange={(e) => setField("message", e.target.value)}
-          onBlur={() => blurField("message")}
-          maxLength={1000}
-          className={cn(inputClass("message"), "resize-none")}
-          aria-invalid={Boolean(touched.message && errors.message)}
-        />
-        {touched.message && errors.message && (
-          <p className="text-destructive text-xs mt-1">{errors.message}</p>
+        <div className="relative">
+          <User className={iconClass} strokeWidth={1.75} />
+          <input
+            type="text"
+            placeholder="الإسم"
+            value={form.name}
+            onChange={(e) => setField("name", e.target.value)}
+            onBlur={() => blurField("name")}
+            maxLength={100}
+            className={inputClass("name")}
+            aria-invalid={Boolean(touched.name && errors.name)}
+          />
+        </div>
+        {touched.name && errors.name && (
+          <p className="text-destructive text-xs mt-1.5">{errors.name}</p>
         )}
       </div>
+
+      <div>
+        <div className="relative">
+          <Phone className={iconClass} strokeWidth={1.75} />
+          <input
+            type="tel"
+            dir="ltr"
+            placeholder="رقم الجوال (05xxxxxxxx)"
+            value={form.mobile}
+            onChange={(e) => setField("mobile", e.target.value)}
+            onBlur={() => blurField("mobile")}
+            maxLength={13}
+            className={cn(inputClass("mobile"), "text-right placeholder:text-right")}
+            aria-invalid={Boolean(touched.mobile && errors.mobile)}
+          />
+        </div>
+        {touched.mobile && errors.mobile && (
+          <p className="text-destructive text-xs mt-1.5">{errors.mobile}</p>
+        )}
+      </div>
+
+      <div>
+        <div className="relative">
+          <FileText className="absolute start-3.5 top-4 w-[18px] h-[18px] text-muted-foreground pointer-events-none" strokeWidth={1.75} />
+          <textarea
+            placeholder="وصف الطلب"
+            rows={4}
+            value={form.message}
+            onChange={(e) => setField("message", e.target.value)}
+            onBlur={() => blurField("message")}
+            maxLength={1000}
+            className={cn(inputClass("message"), "resize-none pt-3.5")}
+            aria-invalid={Boolean(touched.message && errors.message)}
+          />
+        </div>
+        {touched.message && errors.message && (
+          <p className="text-destructive text-xs mt-1.5">{errors.message}</p>
+        )}
+      </div>
+
       {/* حقل فخ ضد الروبوتات — مخفي عن الزوار */}
       <input
         type="text"
@@ -234,10 +243,11 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
         className="hidden"
         aria-hidden="true"
       />
+
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded-md font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60"
+        className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3.5 rounded-xl font-bold shadow-lg shadow-accent/25 hover:shadow-accent/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:hover:translate-y-0"
       >
         {status === "sending" ? (
           <>
@@ -251,6 +261,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
           </>
         )}
       </button>
+
       {status === "sent" && (
         <p className="flex items-center justify-center gap-2 text-sm text-foreground font-medium">
           <CheckCircle2 className="w-4 h-4 text-accent" />

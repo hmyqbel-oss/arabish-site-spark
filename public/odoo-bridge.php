@@ -136,14 +136,15 @@ function validate(array $in): array {
         $errors['mobile'] = 'رقم الجوال يجب أن يكون 10 أرقام ويبدأ بـ 05';
     }
 
+    // البريد اختياري — يُتحقق منه فقط إن أُرسل
     $email = trim((string) ($in['email'] ?? ''));
-    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'صيغة البريد الإلكتروني غير صحيحة';
     }
 
     $message = trim((string) ($in['message'] ?? ''));
-    if ($message === '')        $errors['message'] = 'الرسالة مطلوبة';
-    elseif (mb_strlen($message) > 1000) $errors['message'] = 'الرسالة طويلة جداً';
+    if ($message === '')        $errors['message'] = 'وصف الطلب مطلوب';
+    elseif (mb_strlen($message) > 1000) $errors['message'] = 'وصف الطلب طويل جداً';
 
     return [$errors, $name, $mobile, $email, $message];
 }
@@ -153,11 +154,6 @@ function validate(array $in): array {
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         send_json(['ok' => false, 'code' => 'method', 'message' => 'طريقة الطلب غير مدعومة'], 405);
-    }
-
-    // حقل الفخ ضد الروبوتات: يُملأ من الروبوتات فقط
-    if (!empty($_POST['website'] ?? '')) {
-        send_json(['ok' => true]);
     }
 
     if (rate_limited()) {
@@ -171,6 +167,11 @@ try {
     }
     $in = json_decode((string) $raw, true);
     if (!is_array($in)) $in = $_POST;
+
+    // حقل الفخ ضد الروبوتات: يُملأ من الروبوتات فقط — نتظاهر بالنجاح ونتجاهل الطلب
+    if (!empty($in['website'] ?? '')) {
+        send_json(['ok' => true]);
+    }
 
     [$errors, $name, $mobile, $email, $message] = validate(is_array($in) ? $in : []);
     if ($errors) {
@@ -225,18 +226,19 @@ try {
 
     // 4) إنشاء الفرصة في CRM
     $title = 'طلب خدمة من الموقع' . ($serviceName !== '' ? ' – ' . $serviceName : '');
-    $description = "الاسم: {$name}\nالجوال: {$mobile}\nالبريد: {$email}\n"
+    $description = "الاسم: {$name}\nالجوال: {$mobile}\n"
+        . ($email !== '' ? "البريد: {$email}\n" : '')
         . ($serviceName !== '' ? "الخدمة المطلوبة: {$serviceName}\n" : '')
         . ($page !== '' ? "الصفحة: {$page}\n" : '')
-        . "الرسالة:\n{$message}";
+        . "وصف الطلب:\n{$message}";
 
     $vals = [
         'name'         => $title,
         'contact_name' => $name,
         'phone'        => $mobile,
-        'email_from'   => $email,
         'description'  => $description,
     ];
+    if ($email !== '') $vals['email_from'] = $email;
     if ($sourceId) $vals['source_id'] = $sourceId;
     if ($teamId)   $vals['team_id']   = $teamId;
 
