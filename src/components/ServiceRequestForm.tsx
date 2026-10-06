@@ -184,7 +184,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("name", e.target.value)}
             onBlur={() => blurField("name")}
             maxLength={100}
-            className={inputClass("name")}
+            className={cn(inputClass("name"), "pr-12")}
             aria-invalid={Boolean(touched.name && errors.name)}
           />
         </div>
@@ -204,7 +204,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("mobile", e.target.value)}
             onBlur={() => blurField("mobile")}
             maxLength={13}
-            className={cn(inputClass("mobile"), "text-right placeholder:text-right pe-4")}
+            className={cn(inputClass("mobile"), "text-right placeholder:text-right pr-12 pl-4")}
             aria-invalid={Boolean(touched.mobile && errors.mobile)}
           />
         </div>
@@ -223,7 +223,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("message", e.target.value)}
             onBlur={() => blurField("message")}
             maxLength={1000}
-            className={cn(inputClass("message"), "resize-none pt-3.5")}
+            className={cn(inputClass("message"), "resize-none pt-3.5 pr-12")}
             aria-invalid={Boolean(touched.message && errors.message)}
           />
         </div>
