@@ -60,7 +60,7 @@ const Navbar = () => {
         )}
       >
         {/* Logo */}
-        <a href="/" className="flex items-center gap-3 relative z-50">
+        <a href="/" onClick={go("/")} className="flex items-center gap-3 relative z-50">
           <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", useDarkText ? "" : "brightness-0 invert")} />
         </a>
 
@@ -68,6 +68,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="/#hero"
+            onClick={go("/#hero")}
             className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
@@ -81,6 +82,7 @@ const Navbar = () => {
           >
             <a
               href="/#services"
+              onClick={go("/#services")}
               className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
@@ -98,6 +100,7 @@ const Navbar = () => {
                   <a
                     key={i}
                     href={link.href}
+                    onClick={go(link.href)}
                     className="block px-6 py-3 text-sm text-foreground hover:bg-accent/10 hover:text-accent transition-colors border-b border-border/30 last:border-b-0"
                   >
                     {link.label}
@@ -111,6 +114,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
+              onClick={go(link.href)}
               className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
@@ -122,6 +126,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="/#contact"
+            onClick={go("/#contact")}
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
