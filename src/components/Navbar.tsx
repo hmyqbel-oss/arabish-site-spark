@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
@@ -27,7 +27,14 @@ const Navbar = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
+
+  const go = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpen(false);
+    navigate(href);
+  };
   // On non-home pages, always use dark text style (as if scrolled)
   const useDarkText = scrolled || !isHome;
 
@@ -53,7 +60,7 @@ const Navbar = () => {
         )}
       >
         {/* Logo */}
-        <a href="/" className="flex items-center gap-3 relative z-50">
+        <a href="/" onClick={go("/")} className="flex items-center gap-3 relative z-50">
           <img src={logo} alt="OSAEC" className={cn("h-12 md:h-14 w-auto transition-all duration-300", useDarkText ? "" : "brightness-0 invert")} />
         </a>
 
@@ -61,6 +68,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="/#hero"
+            onClick={go("/#hero")}
             className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
           >
             الرئيسية
@@ -74,6 +82,7 @@ const Navbar = () => {
           >
             <a
               href="/#services"
+              onClick={go("/#services")}
               className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               خدماتنا
@@ -91,6 +100,7 @@ const Navbar = () => {
                   <a
                     key={i}
                     href={link.href}
+                    onClick={go(link.href)}
                     className="block px-6 py-3 text-sm text-foreground hover:bg-accent/10 hover:text-accent transition-colors border-b border-border/30 last:border-b-0"
                   >
                     {link.label}
@@ -104,6 +114,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
+              onClick={go(link.href)}
               className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
             >
               {link.label}
@@ -115,6 +126,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="/#contact"
+            onClick={go("/#contact")}
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -150,7 +162,7 @@ const Navbar = () => {
           >
             <a
               href="/#hero"
-              onClick={() => setOpen(false)}
+              onClick={go("/#hero")}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
               الرئيسية
@@ -176,7 +188,7 @@ const Navbar = () => {
                   <a
                     key={i}
                     href={link.href}
-                    onClick={() => setOpen(false)}
+                    onClick={go(link.href)}
                     className="text-primary-foreground/60 hover:text-accent transition-colors py-2 text-sm text-center"
                   >
                     {link.label}
@@ -189,7 +201,7 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={go(link.href)}
                 className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
               >
                 {link.label}
@@ -205,7 +217,7 @@ const Navbar = () => {
           >
             <a
               href="/#contact"
-              onClick={() => setOpen(false)}
+              onClick={go("/#contact")}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
               <Phone className="w-5 h-5" />
