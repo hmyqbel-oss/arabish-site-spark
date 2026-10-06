@@ -162,7 +162,7 @@ const Navbar = () => {
           >
             <a
               href="/#hero"
-              onClick={() => setOpen(false)}
+              onClick={go("/#hero")}
               className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
             >
               الرئيسية
@@ -188,7 +188,7 @@ const Navbar = () => {
                   <a
                     key={i}
                     href={link.href}
-                    onClick={() => setOpen(false)}
+                    onClick={go(link.href)}
                     className="text-primary-foreground/60 hover:text-accent transition-colors py-2 text-sm text-center"
                   >
                     {link.label}
@@ -201,7 +201,7 @@ const Navbar = () => {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={go(link.href)}
                 className="text-primary-foreground text-xl font-medium hover:text-accent transition-colors py-3 w-full text-center"
               >
                 {link.label}
@@ -217,7 +217,7 @@ const Navbar = () => {
           >
             <a
               href="/#contact"
-              onClick={() => setOpen(false)}
+              onClick={go("/#contact")}
               className="flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-md text-base font-semibold hover:bg-accent/90 transition-colors w-full"
             >
               <Phone className="w-5 h-5" />
