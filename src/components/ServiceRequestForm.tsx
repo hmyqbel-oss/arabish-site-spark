@@ -195,7 +195,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
 
       <div>
         <div className="relative">
-          <Phone className={iconClass} strokeWidth={1.75} />
+          <Phone className="absolute end-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-muted-foreground pointer-events-none" strokeWidth={1.75} />
           <input
             type="tel"
             dir="ltr"
@@ -204,7 +204,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("mobile", e.target.value)}
             onBlur={() => blurField("mobile")}
             maxLength={13}
-            className={cn(inputClass("mobile"), "text-right placeholder:text-right")}
+            className={cn(inputClass("mobile"), "text-right placeholder:text-right pe-4")}
             aria-invalid={Boolean(touched.mobile && errors.mobile)}
           />
         </div>
