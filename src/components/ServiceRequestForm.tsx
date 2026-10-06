@@ -163,7 +163,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
 
   const inputClass = (field: keyof FormData) =>
     cn(
-      "w-full bg-background border rounded-xl ps-11 pe-4 py-3.5 text-sm shadow-sm transition-all duration-200",
+      "w-full bg-background border rounded-xl px-4 py-3.5 text-sm shadow-sm transition-all duration-200",
       "focus:outline-none focus:ring-2 focus:border-accent/60 hover:border-accent/40",
       touched[field] && errors[field]
         ? "border-destructive focus:ring-destructive/40"
@@ -184,7 +184,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("name", e.target.value)}
             onBlur={() => blurField("name")}
             maxLength={100}
-            className={inputClass("name")}
+            className={cn(inputClass("name"), "pr-12")}
             aria-invalid={Boolean(touched.name && errors.name)}
           />
         </div>
@@ -195,7 +195,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
 
       <div>
         <div className="relative">
-          <Phone className="absolute end-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-muted-foreground pointer-events-none" strokeWidth={1.75} />
+          <Phone className={iconClass} strokeWidth={1.75} />
           <input
             type="tel"
             dir="ltr"
@@ -204,7 +204,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("mobile", e.target.value)}
             onBlur={() => blurField("mobile")}
             maxLength={13}
-            className={cn(inputClass("mobile"), "text-right placeholder:text-right pe-4")}
+            className={cn(inputClass("mobile"), "text-right placeholder:text-right pr-12 pl-4")}
             aria-invalid={Boolean(touched.mobile && errors.mobile)}
           />
         </div>
@@ -223,7 +223,7 @@ const ServiceRequestForm = ({ serviceName, className }: ServiceRequestFormProps)
             onChange={(e) => setField("message", e.target.value)}
             onBlur={() => blurField("message")}
             maxLength={1000}
-            className={cn(inputClass("message"), "resize-none pt-3.5")}
+            className={cn(inputClass("message"), "resize-none pt-3.5 pr-12")}
             aria-invalid={Boolean(touched.message && errors.message)}
           />
         </div>
