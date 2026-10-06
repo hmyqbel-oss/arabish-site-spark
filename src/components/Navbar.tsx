@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
@@ -27,7 +27,14 @@ const Navbar = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const scrolled = useScroll(10);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
+
+  const go = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpen(false);
+    navigate(href);
+  };
   // On non-home pages, always use dark text style (as if scrolled)
   const useDarkText = scrolled || !isHome;
 
