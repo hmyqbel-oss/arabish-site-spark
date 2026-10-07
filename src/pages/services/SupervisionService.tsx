@@ -31,7 +31,7 @@ const SupervisionService = () => (
             <p className="text-muted-foreground leading-relaxed mb-8">
               نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في الإشراف على تنفيذ المشاريع الهندسية وإدارتها بكفاءة عالية لضمان تحقيق أعلى مستويات الجودة.
             </p>
-            <Link to="/service-request" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
+            <Link to="/#contact" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
               طلب الخدمة
             </Link>
           </div>
