@@ -18,6 +18,7 @@ const navLinks = [
   { label: "الرئيسية", href: "/#hero" },
   { label: "مشاريعنا", href: "/#projects" },
   { label: "من نحن", href: "/#about" },
+  { label: "بروفايل الشركة", href: "/profile" },
   { label: "طلب الخدمة", href: "/#contact" },
 ];
 
