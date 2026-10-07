@@ -135,7 +135,7 @@ const DesignService = () => (
               التصميم النهائية المثلى وفق رؤية واحتياجات العملاء.
             </p>
             <Link
-              to="/service-request"
+              to="/#contact"
               className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors"
             >
               طلب الخدمة

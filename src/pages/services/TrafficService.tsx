@@ -31,7 +31,7 @@ const TrafficService = () => (
             <p className="text-muted-foreground leading-relaxed mb-8">
               نضم في شركتنا العديد من الكوادر الفنية ذات الخبرات العالية في دراسات وتحليل السلامة المرورية وتقديم الحلول المرورية المتكاملة.
             </p>
-            <Link to="/service-request" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
+            <Link to="/#contact" className="inline-block bg-accent text-accent-foreground px-8 py-3 rounded-md text-sm font-semibold hover:bg-accent/90 transition-colors">
               طلب الخدمة
             </Link>
           </div>

@@ -6,8 +6,8 @@ const CTASection = () => {
     <section id="contact" className="py-16 md:py-24 bg-brand-light">
       <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">لا تتردد في التواصل معنا</h2>
-          <p className="text-muted-foreground text-sm md:text-base">متواجدون على مدار الساعة ونقدم استشارات مجانية</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">طلب الخدمة</h2>
+          <p className="text-muted-foreground text-sm md:text-base">املأ النموذج ببياناتك وسيصل طلبك مباشرة إلى فريقنا، وسنعاود التواصل معك في أقرب وقت</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">

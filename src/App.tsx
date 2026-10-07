@@ -1,12 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
-import ServiceRequest from "./pages/ServiceRequest.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import DesignService from "./pages/services/DesignService.tsx";
 import SupervisionService from "./pages/services/SupervisionService.tsx";
@@ -49,7 +48,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/service-request" element={<ServiceRequest />} />
+          <Route path="/service-request" element={<Navigate to="/#contact" replace />} />
           <Route path="/services/design" element={<DesignService />} />
           <Route path="/services/supervision" element={<SupervisionService />} />
           <Route path="/services/safety" element={<SafetyService />} />
