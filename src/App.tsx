@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
-import Profile from "./pages/Profile.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import DesignService from "./pages/services/DesignService.tsx";
 import SupervisionService from "./pages/services/SupervisionService.tsx";
@@ -49,7 +48,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Navigate to="/#profile" replace />} />
           <Route path="/service-request" element={<Navigate to="/#contact" replace />} />
           <Route path="/services/design" element={<DesignService />} />
           <Route path="/services/supervision" element={<SupervisionService />} />
