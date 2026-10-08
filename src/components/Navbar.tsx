@@ -26,6 +26,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const scrolled = useScroll(10);
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,6 +39,31 @@ const Navbar = () => {
   };
   // On non-home pages, always use dark text style (as if scrolled)
   const useDarkText = scrolled || !isHome;
+
+  // Scroll-spy: track which section is currently in view
+  useEffect(() => {
+    if (!isHome) {
+      setActiveSection(location.pathname === "/profile" ? "profile" : "services");
+      return;
+    }
+    const ids = ["hero", "services", "projects", "about", "contact"];
+    const onScroll = () => {
+      let current = "hero";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 150) current = id;
+      }
+      setActiveSection(current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome, location.pathname]);
+
+  const isActive = (href: string) => {
+    const section = href.includes("#") ? href.split("#")[1] : href.replace("/", "");
+    return activeSection === section;
+  };
 
   useEffect(() => {
     if (open) {
@@ -70,9 +96,10 @@ const Navbar = () => {
           <a
             href="/#hero"
             onClick={go("/#hero")}
-            className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+            className={cn("relative transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent", isActive("/#hero") && "text-accent")}
           >
             الرئيسية
+            <span className={cn("absolute -bottom-1 right-0 left-0 h-[2px] rounded-full bg-accent transition-all duration-300", isActive("/#hero") ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0")} />
           </a>
 
           {/* Services Dropdown */}
@@ -84,9 +111,10 @@ const Navbar = () => {
             <a
               href="/#services"
               onClick={go("/#services")}
-              className={cn("flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("relative flex items-center gap-1 transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent", isActive("/#services") && "text-accent")}
             >
               خدماتنا
+              <span className={cn("absolute -bottom-1 right-0 left-0 h-[2px] rounded-full bg-accent transition-all duration-300", isActive("/#services") ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0")} />
               <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", servicesOpen && "rotate-180")} />
             </a>
 
@@ -116,9 +144,10 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={go(link.href)}
-              className={cn("transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent")}
+              className={cn("relative transition-colors text-sm font-medium", useDarkText ? "text-foreground/80 hover:text-accent" : "text-primary-foreground/80 hover:text-accent", isActive(link.href) && "text-accent")}
             >
               {link.label}
+              <span className={cn("absolute -bottom-1 right-0 left-0 h-[2px] rounded-full bg-accent transition-all duration-300", isActive(link.href) ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0")} />
             </a>
           ))}
         </div>
