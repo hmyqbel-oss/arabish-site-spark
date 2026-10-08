@@ -18,7 +18,7 @@ const navLinks = [
   { label: "الرئيسية", href: "/#hero" },
   { label: "مشاريعنا", href: "/#projects" },
   { label: "من نحن", href: "/#about" },
-  { label: "بروفايل الشركة", href: "/profile" },
+  { label: "بروفايل الشركة", href: "/#profile" },
   { label: "طلب الخدمة", href: "/#contact" },
 ];
 
@@ -43,10 +43,10 @@ const Navbar = () => {
   // Scroll-spy: track which section is currently in view
   useEffect(() => {
     if (!isHome) {
-      setActiveSection(location.pathname === "/profile" ? "profile" : "services");
+      setActiveSection("services");
       return;
     }
-    const ids = ["hero", "services", "projects", "about", "contact"];
+    const ids = ["hero", "services", "projects", "about", "profile", "contact"];
     const onScroll = () => {
       let current = "hero";
       for (const id of ids) {
