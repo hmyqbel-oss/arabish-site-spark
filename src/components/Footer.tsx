@@ -23,7 +23,7 @@ const Footer = () => {
                 { label: "خدماتنا", href: "#services" },
                 { label: "مشاريعنا", href: "#projects" },
                 { label: "من نحن", href: "#about" },
-                { label: "تواصل معنا", href: "#contact" },
+                { label: "طلب الخدمة", href: "#contact" },
               ].map((link) => (
                 <li key={link.href}>
                   <a
