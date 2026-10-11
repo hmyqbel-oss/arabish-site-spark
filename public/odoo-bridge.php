@@ -14,28 +14,17 @@
 
 declare(strict_types=1);
 
-/* ==================== الإعدادات — يملؤها مبرمج أودو ==================== */
+/* ==================== الإعدادات ==================== */
 
-// رابط أودو بدون شرطة مائلة في النهاية. مثال: https://mycompany.odoo.com
-const ODOO_URL      = '';
+// رابط أودو بدون شرطة مائلة في النهاية (حالياً النسخة التجريبية)
+const ODOO_URL     = 'https://wahattamuyztest.odoo.com';
 
-// اسم قاعدة البيانات
-const ODOO_DB       = '';
+// مفتاح API الخاص بالموقع (CRM → Configuration → Lead API Clients)
+const ODOO_API_KEY = 'rZb9uqghPIx7_YnKoMih0M6w9KoXzPQfH-wHCN4KRZk';
 
-// مستخدم مخصص للربط (ليس حساباً شخصياً) — له صلاحية إنشاء سجلات في CRM فقط
-const ODOO_USERNAME = '';
-
-// مفتاح API الخاص بالمستخدم (أودو ← إعدادات الحساب ← الأمان ← مفتاح API جديد)
-const ODOO_API_KEY  = '';
-
-// قيمة "مصدر الطلب" في أودو للفلترة (تُنشأ تلقائياً إن لم تكن موجودة)
-const ODOO_SOURCE_NAME = 'الموقع الإلكتروني';
-
-// اسم فريق المبيعات (CRM Teams) لتحويل الطلبات إليه — اتركه فارغاً للتعطيل
-const ODOO_TEAM_NAME   = '';
-
-// بريد لإشعار فريق المبيعات عند كل طلب جديد — اتركه فارغاً للتعطيل
-const NOTIFY_EMAIL     = '';
+// اسم "المصدر" في أودو للفلترة — يجب أن يكون موجوداً مسبقاً في أودو بنفس الاسم حرفياً
+// (وإلا يُستخدم المصدر الافتراضي المحدد في أودو). اتركه فارغاً للاعتماد على إعداد أودو.
+const ODOO_SOURCE_NAME = '';
 
 /* ==================== ثوابت النظام ==================== */
 
@@ -90,21 +79,19 @@ function rate_limited(): bool {
     return false;
 }
 
-/** استدعاء JSON-RPC لأودو — يعمل مع Odoo Online و Odoo.sh والسيرفر الخاص */
-function odoo_call(string $service, string $method, array $args) {
-    $ch = curl_init(rtrim(ODOO_URL, '/') . '/jsonrpc');
+/** إرسال الطلب إلى واجهة أودو المخصصة: POST /api/v1/crm/leads */
+function odoo_create_lead(array $payload): array {
+    $ch = curl_init(rtrim(ODOO_URL, '/') . '/api/v1/crm/leads');
     curl_setopt_array($ch, [
         CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => json_encode([
-            'jsonrpc' => '2.0',
-            'method'  => 'call',
-            'params'  => ['service' => $service, 'method' => $method, 'args' => $args],
-            'id'      => 1,
-        ], JSON_UNESCAPED_UNICODE),
+        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_TIMEOUT        => 25,
-        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json; charset=utf-8',
+            'X-API-Key: ' . ODOO_API_KEY,
+        ],
     ]);
     $raw  = curl_exec($ch);
     $err  = curl_error($ch);
@@ -113,12 +100,10 @@ function odoo_call(string $service, string $method, array $args) {
 
     if ($raw === false) throw new RuntimeException('تعذر الاتصال بأودو: ' . $err);
     $json = json_decode((string) $raw, true);
-    if (!is_array($json)) throw new RuntimeException('رد غير صالح من أودو (HTTP ' . $http . ')');
-    if (isset($json['error'])) {
-        $msg = $json['error']['data']['message'] ?? json_encode($json['error'], JSON_UNESCAPED_UNICODE);
-        throw new RuntimeException('خطأ من أودو: ' . $msg);
+    if (!is_array($json) || empty($json['success'])) {
+        throw new RuntimeException('رد أودو (HTTP ' . $http . '): ' . substr((string) $raw, 0, 500));
     }
-    return $json['result'] ?? null;
+    return $json;
 }
 
 /* ==================== التحقق من المدخلات ==================== */
@@ -183,78 +168,44 @@ try {
     $page        = trim((string) ($in['page'] ?? ''));
 
     // الوسيط غير مهيأ بعد → الموقع يتحول تلقائياً لواتساب
-    if (ODOO_URL === '' || ODOO_DB === '' || ODOO_USERNAME === '' || ODOO_API_KEY === '') {
+    if (ODOO_URL === '' || ODOO_API_KEY === '') {
         append_log('submissions.jsonl', [
             'at' => date('c'), 'ip' => client_ip(), 'status' => 'not_configured',
-            'name' => $name, 'mobile' => $mobile, 'email' => $email,
-            'service' => $serviceName, 'page' => $page, 'message' => $message,
+            'name' => $name, 'mobile' => $mobile, 'service' => $serviceName, 'page' => $page, 'message' => $message,
         ]);
-        send_json(['ok' => false, 'code' => 'not_configured',
-            'message' => 'لم يتم ربط أودو بعد']);
+        send_json(['ok' => false, 'code' => 'not_configured', 'message' => 'لم يتم ربط أودو بعد']);
     }
 
-    // 1) تسجيل الدخول إلى أودو
-    $uid = odoo_call('common', 'login', [ODOO_DB, ODOO_USERNAME, ODOO_API_KEY]);
-    if (!$uid) throw new RuntimeException('فشل تسجيل الدخول إلى أودو — تحقق من المستخدم والمفتاح');
+    // مرجع ثابت لمنع تكرار الطلب عند إعادة المحاولة أو الضغط مرتين
+    $externalId = 'WEB-' . substr(sha1($mobile . '|' . $message), 0, 16);
 
-    $execute = fn(string $model, string $method, array $args) =>
-        odoo_call('object', 'execute_kw',
-            array_merge([ODOO_DB, $uid, ODOO_API_KEY, $model, $method], [$args]));
-
-    // 2) مصدر الطلب للفلترة (يُنشأ تلقائياً إن لم يوجد) — فشله لا يوقف الطلب
-    $sourceId = null;
-    try {
-        $found = $execute('utm.source', 'search_read',
-            [[['name', '=', ODOO_SOURCE_NAME]], ['fields' => ['id'], 'limit' => 1]]);
-        $sourceId = $found ? (int) $found[0]['id']
-            : (int) $execute('utm.source', 'create', [['name' => ODOO_SOURCE_NAME]]);
-    } catch (Throwable $e) {
-        append_log('warnings.jsonl', ['at' => date('c'), 'step' => 'source', 'error' => $e->getMessage()]);
-    }
-
-    // 3) فريق المبيعات (اختياري)
-    $teamId = null;
-    if (ODOO_TEAM_NAME !== '') {
-        try {
-            $teams = $execute('crm.team', 'search_read',
-                [[['name', '=', ODOO_TEAM_NAME]], ['fields' => ['id'], 'limit' => 1]]);
-            $teamId = $teams ? (int) $teams[0]['id'] : null;
-        } catch (Throwable $e) {
-            append_log('warnings.jsonl', ['at' => date('c'), 'step' => 'team', 'error' => $e->getMessage()]);
-        }
-    }
-
-    // 4) إنشاء الفرصة في CRM
-    $title = 'طلب خدمة من الموقع' . ($serviceName !== '' ? ' – ' . $serviceName : '');
-    $description = "الاسم: {$name}\nالجوال: {$mobile}\n"
-        . ($email !== '' ? "البريد: {$email}\n" : '')
-        . ($serviceName !== '' ? "الخدمة المطلوبة: {$serviceName}\n" : '')
+    $title = 'طلب خدمة من الموقع' . ($serviceName !== '' ? ' – ' . $serviceName : '') . ' – ' . $name;
+    $description = ($serviceName !== '' ? "الخدمة المطلوبة: {$serviceName}\n" : '')
         . ($page !== '' ? "الصفحة: {$page}\n" : '')
         . "وصف الطلب:\n{$message}";
 
-    $vals = [
+    $payload = [
+        'external_id'  => $externalId,
         'name'         => $title,
         'contact_name' => $name,
-        'phone'        => $mobile,
+        'mobile'       => $mobile,
         'description'  => $description,
+        'country_code' => 'SA',
     ];
-    if ($email !== '') $vals['email_from'] = $email;
-    if ($sourceId) $vals['source_id'] = $sourceId;
-    if ($teamId)   $vals['team_id']   = $teamId;
+    if ($email !== '') $payload['email'] = $email;
+    if (ODOO_SOURCE_NAME !== '') $payload['source'] = ODOO_SOURCE_NAME;
 
-    $leadId = (int) $execute('crm.lead', 'create', [$vals]);
+    $res = odoo_create_lead($payload);
+    $leadId = (int) ($res['lead_id'] ?? 0);
 
-    // 5) سجل + إشعار اختياري
+    if (!empty($res['warnings'])) {
+        append_log('warnings.jsonl', ['at' => date('c'), 'lead_id' => $leadId, 'warnings' => $res['warnings']]);
+    }
     append_log('submissions.jsonl', [
         'at' => date('c'), 'ip' => client_ip(), 'status' => 'ok', 'lead_id' => $leadId,
-        'name' => $name, 'mobile' => $mobile, 'email' => $email,
-        'service' => $serviceName, 'page' => $page, 'message' => $message,
+        'created' => $res['created'] ?? null, 'external_id' => $externalId,
+        'name' => $name, 'mobile' => $mobile, 'service' => $serviceName, 'page' => $page, 'message' => $message,
     ]);
-
-    if (NOTIFY_EMAIL !== '') {
-        @mail(NOTIFY_EMAIL, 'طلب خدمة جديد من الموقع #' . $leadId, $description,
-            'From: no-reply@' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
-    }
 
     send_json(['ok' => true, 'lead_id' => $leadId,
         'message' => 'تم إرسال طلبك بنجاح']);
