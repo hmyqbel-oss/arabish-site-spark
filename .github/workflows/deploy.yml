@@ -30,11 +30,11 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
-          # خيارات إضافية لحل مشكلة انقطاع الاتصال ECONNRESET
-          protocol: ftps
+          # إعدادات لتقليل الضغط ومنع قطع الاتصال من قبل الاستضافة
+          protocol: ftp
           port: 21
+          concurrency: 1
           timeout: 600000
-          # عدم حذف الملفات الحساسة بالخطأ لضمان عدم ظهور الشاشة البيضاء
           exclude: |
             **/.git*
             **/.git*/**
