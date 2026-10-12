@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install & Build
         run: |
@@ -30,3 +30,12 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
+          # خيارات إضافية لحل مشكلة انقطاع الاتصال ECONNRESET
+          protocol: ftps
+          port: 21
+          timeout: 600000
+          # عدم حذف الملفات الحساسة بالخطأ لضمان عدم ظهور الشاشة البيضاء
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
